@@ -29,8 +29,11 @@ type AppDataContextValue = {
   contacts: StoredContact[];
   events: StoredEvent[];
   isHydrated: boolean;
+  storageError: string | null;
   addContact: (input: AddContactInput) => StoredContact;
   addEvent: (input: AddEventInput) => StoredEvent;
+  removeContact: (contactId: string) => void;
+  removeEvent: (eventId: string) => void;
 };
 
 const AppDataContext = createContext<AppDataContextValue | null>(null);
@@ -122,32 +125,43 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [contacts, setContacts] = useState<StoredContact[]>(initialStoredContacts);
   const [events, setEvents] = useState<StoredEvent[]>(initialStoredEvents);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [storageError, setStorageError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
     async function hydrate() {
-      const [storedContacts, storedEvents] = await Promise.all([
-        AsyncStorage.getItemAsync(CONTACTS_STORAGE_KEY),
-        AsyncStorage.getItemAsync(EVENTS_STORAGE_KEY),
-      ]);
+      try {
+        const [storedContacts, storedEvents] = await Promise.all([
+          AsyncStorage.getItemAsync(CONTACTS_STORAGE_KEY),
+          AsyncStorage.getItemAsync(EVENTS_STORAGE_KEY),
+        ]);
 
-      if (cancelled) {
-        return;
+        if (cancelled) {
+          return;
+        }
+
+        const parsedContacts = parseStoredContacts(storedContacts);
+        const parsedEvents = parseStoredEvents(storedEvents);
+
+        if (parsedContacts) {
+          setContacts(parsedContacts);
+        }
+
+        if (parsedEvents) {
+          setEvents(parsedEvents);
+        }
+
+        setStorageError(null);
+      } catch {
+        if (!cancelled) {
+          setStorageError('Saved data could not be loaded. Using the bundled starter data.');
+        }
+      } finally {
+        if (!cancelled) {
+          setIsHydrated(true);
+        }
       }
-
-      const parsedContacts = parseStoredContacts(storedContacts);
-      const parsedEvents = parseStoredEvents(storedEvents);
-
-      if (parsedContacts) {
-        setContacts(parsedContacts);
-      }
-
-      if (parsedEvents) {
-        setEvents(parsedEvents);
-      }
-
-      setIsHydrated(true);
     }
 
     void hydrate();
@@ -162,7 +176,9 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    void AsyncStorage.setItemAsync(CONTACTS_STORAGE_KEY, JSON.stringify(contacts));
+    void AsyncStorage.setItemAsync(CONTACTS_STORAGE_KEY, JSON.stringify(contacts)).catch(() => {
+      setStorageError('Contacts could not be saved to local storage.');
+    });
   }, [contacts, isHydrated]);
 
   useEffect(() => {
@@ -170,7 +186,9 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    void AsyncStorage.setItemAsync(EVENTS_STORAGE_KEY, JSON.stringify(events));
+    void AsyncStorage.setItemAsync(EVENTS_STORAGE_KEY, JSON.stringify(events)).catch(() => {
+      setStorageError('Events could not be saved to local storage.');
+    });
   }, [events, isHydrated]);
 
   const value = useMemo<AppDataContextValue>(
@@ -178,6 +196,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       contacts,
       events,
       isHydrated,
+      storageError,
       addContact(input) {
         const palette = relationshipPalette[input.relationship];
         const name = input.name.trim();
@@ -218,8 +237,15 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
         setEvents((current) => [newEvent, ...current]);
         return newEvent;
       },
+      removeContact(contactId) {
+        setContacts((current) => current.filter((contact) => contact.id !== contactId));
+        setEvents((current) => current.filter((event) => event.contactId !== contactId));
+      },
+      removeEvent(eventId) {
+        setEvents((current) => current.filter((event) => event.id !== eventId));
+      },
     }),
-    [contacts, events, isHydrated]
+    [contacts, events, isHydrated, storageError]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;

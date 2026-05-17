@@ -1,10 +1,11 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { HistoryEntryCard, MetricCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
+import { AppStateBanner } from '@/components/app-state-banner';
 import { TimelineHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
 import { buildHistoryEntries } from '@/lib/app-selectors';
@@ -12,13 +13,14 @@ import { useAppData } from '@/state/app-data';
 
 export default function HistoryScreen() {
   const router = useRouter();
-  const { contacts, events } = useAppData();
+  const { contacts, events, isHydrated, removeEvent, storageError } = useAppData();
   const history = buildHistoryEntries(contacts, events);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <AppHeader />
+        <AppStateBanner isHydrated={isHydrated} storageError={storageError} />
 
         <View style={styles.headerRow}>
           <View style={styles.headerCopy}>
@@ -31,8 +33,8 @@ export default function HistoryScreen() {
           </Pressable>
         </View>
 
-        <HistorySection title="This Week" entries={history.thisWeek} />
-        <HistorySection title="Last Week" entries={history.lastWeek} />
+        <HistorySection onDeleteEvent={removeEvent} title="This Week" entries={history.thisWeek} />
+        <HistorySection onDeleteEvent={removeEvent} title="Last Week" entries={history.lastWeek} />
 
         <View style={styles.streakCard}>
           <View style={styles.streakIcon}>
@@ -55,9 +57,11 @@ export default function HistoryScreen() {
 function HistorySection({
   title,
   entries,
+  onDeleteEvent,
 }: {
   title: string;
   entries: import('@/data/mock-app-data').HistoryEntry[];
+  onDeleteEvent: (eventId: string) => void;
 }) {
   return (
     <View style={styles.section}>
@@ -65,7 +69,20 @@ function HistorySection({
 
       <View style={styles.entryStack}>
         {entries.map((entry) => (
-          <HistoryEntryCard key={`${title}-${entry.name}`} {...entry} />
+          <HistoryEntryCard
+            key={entry.id}
+            {...entry}
+            onLongPress={() =>
+              Alert.alert('Delete event?', `Remove this ${entry.mode.toLowerCase()} entry for ${entry.name}?`, [
+                { style: 'cancel', text: 'Cancel' },
+                {
+                  style: 'destructive',
+                  text: 'Delete',
+                  onPress: () => onDeleteEvent(entry.id),
+                },
+              ])
+            }
+          />
         ))}
       </View>
     </View>

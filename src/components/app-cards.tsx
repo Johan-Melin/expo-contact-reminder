@@ -81,6 +81,7 @@ export function OnTrackContactCard({ name, status, initials, avatar }: OnTrackCo
 }
 
 export function ContactCard({
+  id: _id,
   name,
   cadence,
   urgency,
@@ -93,9 +94,10 @@ export function ContactCard({
   actionBackground,
   tagBackground,
   tagColor,
-}: Contact) {
+  onLongPress,
+}: Contact & { onLongPress?: () => void }) {
   return (
-    <View style={styles.contactCard}>
+    <Pressable onLongPress={onLongPress} style={styles.contactCard}>
       <AvatarRing
         accent={accent}
         color={avatar}
@@ -121,13 +123,24 @@ export function ContactCard({
       <Pressable style={[styles.actionCircle, { backgroundColor: actionBackground }]}>
         <MaterialCommunityIcons color={actionColor} name={actionIcon} size={26} />
       </Pressable>
-    </View>
+    </Pressable>
   );
 }
 
-export function HistoryEntryCard({ name, age, mode, initials, avatar, ring, icon, iconColor }: HistoryEntry) {
+export function HistoryEntryCard({
+  id: _id,
+  name,
+  age,
+  mode,
+  initials,
+  avatar,
+  ring,
+  icon,
+  iconColor,
+  onLongPress,
+}: HistoryEntry & { onLongPress?: () => void }) {
   return (
-    <View style={styles.historyCard}>
+    <Pressable onLongPress={onLongPress} style={styles.historyCard}>
       <AvatarRing accent={ring} color={avatar} initials={initials} outerSize={66} innerSize={50} textSize={18} />
       <View style={styles.historyCopy}>
         <View style={styles.historyTopRow}>
@@ -139,7 +152,7 @@ export function HistoryEntryCard({ name, age, mode, initials, avatar, ring, icon
           <Text style={styles.historyMode}>{mode}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

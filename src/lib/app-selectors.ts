@@ -186,6 +186,7 @@ export function buildContactCards(contacts: StoredContact[], events: StoredEvent
         : -999;
 
       return {
+        id: contact.id,
         name: contact.name,
         cadence: contact.interval,
         urgency: dueInDays < 0 ? 'Overdue' : `${pluralizeDay(dueInDays)} left`,
@@ -231,6 +232,7 @@ export function buildHistoryEntries(
     const daysAgo = differenceInDays(toDate(event.date));
 
     entries.push({
+      id: event.id,
       name: contact.name,
       age: daysAgo === 0 ? 'Today' : `${pluralizeDay(daysAgo)} ago`,
       mode: event.type,

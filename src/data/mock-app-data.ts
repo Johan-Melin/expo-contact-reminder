@@ -34,6 +34,7 @@ export type StoredInterval = 'Weekly' | 'Bi-weekly' | 'Monthly' | 'Custom';
 export type StoredConnectionType = 'Phone Call' | 'Message' | 'In-person' | 'Video Call';
 
 export type Contact = {
+  id: string;
   name: string;
   cadence: string;
   urgency: string;
@@ -49,6 +50,7 @@ export type Contact = {
 };
 
 export type HistoryEntry = {
+  id: string;
   name: string;
   age: string;
   mode: string;

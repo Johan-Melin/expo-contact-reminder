@@ -2,10 +2,11 @@ import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouter } from 'expo-router';
 import React, { useDeferredValue, useState } from 'react';
-import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { AppFab, ContactCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
+import { AppStateBanner } from '@/components/app-state-banner';
 import { AppColors, AppSpacing } from '@/constants/app-design';
 import { ContactFilter, contactFilters } from '@/data/mock-app-data';
 import { buildContactCards } from '@/lib/app-selectors';
@@ -13,7 +14,7 @@ import { useAppData } from '@/state/app-data';
 
 export default function ContactsScreen() {
   const router = useRouter();
-  const { contacts, events } = useAppData();
+  const { contacts, events, isHydrated, removeContact, storageError } = useAppData();
   const [activeFilter, setActiveFilter] = useState<ContactFilter>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const deferredQuery = useDeferredValue(searchQuery);
@@ -48,6 +49,7 @@ export default function ContactsScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <AppHeader />
+        <AppStateBanner isHydrated={isHydrated} storageError={storageError} />
 
         <View style={styles.searchBox}>
           <Feather color="#707973" name="search" size={28} />
@@ -90,7 +92,20 @@ export default function ContactsScreen() {
         {filteredContacts.length ? (
           <View style={styles.cardStack}>
             {filteredContacts.map((contact) => (
-              <ContactCard key={contact.name} {...contact} />
+              <ContactCard
+                key={contact.id}
+                {...contact}
+                onLongPress={() =>
+                  Alert.alert('Delete contact?', `${contact.name} and related events will be removed.`, [
+                    { style: 'cancel', text: 'Cancel' },
+                    {
+                      style: 'destructive',
+                      text: 'Delete',
+                      onPress: () => removeContact(contact.id),
+                    },
+                  ])
+                }
+              />
             ))}
           </View>
         ) : (

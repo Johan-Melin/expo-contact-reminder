@@ -10,6 +10,7 @@ import {
   UpcomingReminderCard,
 } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
+import { AppStateBanner } from '@/components/app-state-banner';
 import { SectionHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
 import { buildReminderSummary, buildReminders } from '@/lib/app-selectors';
@@ -17,7 +18,7 @@ import { useAppData } from '@/state/app-data';
 
 export default function RemindersScreen() {
   const router = useRouter();
-  const { contacts, events } = useAppData();
+  const { contacts, events, isHydrated, storageError } = useAppData();
   const reminderData = buildReminders(contacts, events);
   const reminderSummary = buildReminderSummary(contacts, events);
 
@@ -25,6 +26,7 @@ export default function RemindersScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <AppHeader />
+        <AppStateBanner isHydrated={isHydrated} storageError={storageError} />
 
         <View style={styles.heroCard}>
           <View style={styles.heroCopy}>
