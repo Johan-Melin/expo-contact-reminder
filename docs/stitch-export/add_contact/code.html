@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#58a3fe",
+                    "surface-tint": "#2c694e",
+                    "primary-fixed-dim": "#95d4b3",
+                    "on-tertiary-fixed-variant": "#424937",
+                    "on-primary-container": "#a8e7c5",
+                    "inverse-primary": "#95d4b3",
+                    "surface-container-highest": "#dee0ff",
+                    "on-tertiary-container": "#d6ddc4",
+                    "background": "#fbf8ff",
+                    "secondary": "#005fad",
+                    "on-secondary-fixed": "#001c39",
+                    "on-surface": "#161a32",
+                    "primary": "#0f5238",
+                    "on-secondary-container": "#003869",
+                    "secondary-fixed": "#d4e3ff",
+                    "on-primary-fixed-variant": "#0e5138",
+                    "surface-container": "#ececff",
+                    "on-tertiary-fixed": "#171e0e",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#fbf8ff",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#dee0ff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#b1f0ce",
+                    "on-primary-fixed": "#002114",
+                    "surface-container-high": "#e5e6ff",
+                    "surface-dim": "#d5d8f9",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#434a38",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#a4c9ff",
+                    "outline-variant": "#bfc9c1",
+                    "tertiary-fixed-dim": "#c2c9b1",
+                    "on-surface-variant": "#404943",
+                    "outline": "#707973",
+                    "inverse-surface": "#2b2f48",
+                    "surface": "#fbf8ff",
+                    "surface-container-low": "#f4f2ff",
+                    "on-background": "#161a32",
+                    "tertiary-fixed": "#dee6cc",
+                    "tertiary-container": "#5b624e",
+                    "primary-container": "#2d6a4f",
+                    "on-secondary-fixed-variant": "#004884",
+                    "inverse-on-surface": "#f0efff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "xl": "32px",
+                    "gutter": "12px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "container-padding": "20px",
+                    "xs": "4px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "label-md": ["Be Vietnam Pro"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "label-sm": ["Be Vietnam Pro"],
+                    "body-lg": ["Be Vietnam Pro"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-mesh {
+            background-color: #fbf8ff;
+            background-image: radial-gradient(at 0% 0%, rgba(45, 106, 79, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(88, 163, 254, 0.05) 0px, transparent 50%);
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-mesh min-h-screen text-on-surface selection:bg-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-16 max-w-[600px] mx-auto bg-[#f0f4f2] border-b border-emerald-900/10 shadow-sm">
+<div class="flex items-center gap-md">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-emerald-50 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-emerald-800">close</span>
+</button>
+<span class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-emerald-900 text-xl">Garden</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional and friendly male portrait with soft studio lighting. The subject has a warm expression, against a clean, minimalist background that complements the Garden app's light mode aesthetic. The color palette features soft greens and neutral tones, creating a nurturing and dependable brand atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIUMUXLffBNkwsyDqwFkCW2R37_iSRLCZp5vx2fsaAegL9cEyEebG1w8ifr7p27ODbKyQ7yRaAPbBpJmxrRsMnWbEcCSlLRYJNjsqwRRZDCqAmJHC4FGQYFQgs4u1ijoBeVMwcyyb30d3tz3RchvPlJePgEgI-T74gDlLoSKRVzxtRKQHW4AfcsnRIpQA07XK1m15VV1W0Dn93hBhTmCIAg967glaigFfSHQVyEa6AW54JCgUPSujtJanbcr6oGaVFhXJlGX3UTjU"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 pb-32 px-container-padding max-w-[600px] mx-auto min-h-screen">
+<!-- Welcome/Hero Section -->
+<section class="mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-xs">Plant a Connection</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Adding a new contact helps you nurture your social garden with intentionality.</p>
+</section>
+<!-- Form Card -->
+<div class="bg-surface-container-lowest rounded-xl p-lg soft-shadow border border-outline-variant/20">
+<form class="space-y-lg">
+<!-- Name Field -->
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-primary px-1">Name</label>
+<div class="relative">
+<input class="w-full h-12 px-md rounded-lg border-outline-variant bg-surface border focus:border-primary focus:ring-1 focus:ring-primary outline-none font-body-md text-on-surface transition-all placeholder:text-outline" placeholder="Who are you connecting with?" type="text"/>
+</div>
+</div>
+<!-- Relationship Chips -->
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-primary px-1">Relationship</label>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-2 rounded-full border border-primary-container bg-primary-container text-on-primary-container font-label-sm text-label-sm transition-all active:scale-95" type="button">
+                            Family
+                        </button>
+<button class="px-md py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container transition-all active:scale-95" type="button">
+                            Friend
+                        </button>
+<button class="px-md py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container transition-all active:scale-95" type="button">
+                            Colleague
+                        </button>
+<button class="px-md py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container transition-all active:scale-95" type="button">
+                            Other
+                        </button>
+</div>
+</div>
+<!-- Contact Interval -->
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-primary px-1">Contact Interval Preference</label>
+<div class="grid grid-cols-2 gap-sm">
+<label class="relative flex items-center justify-center p-md rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-all has-[:checked]:bg-primary-fixed has-[:checked]:border-primary">
+<input checked="" class="sr-only" name="interval" type="radio"/>
+<span class="font-label-md text-label-md">Weekly</span>
+</label>
+<label class="relative flex items-center justify-center p-md rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-all has-[:checked]:bg-primary-fixed has-[:checked]:border-primary">
+<input class="sr-only" name="interval" type="radio"/>
+<span class="font-label-md text-label-md">Bi-weekly</span>
+</label>
+<label class="relative flex items-center justify-center p-md rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-all has-[:checked]:bg-primary-fixed has-[:checked]:border-primary">
+<input class="sr-only" name="interval" type="radio"/>
+<span class="font-label-md text-label-md">Monthly</span>
+</label>
+<label class="relative flex items-center justify-center p-md rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-all has-[:checked]:bg-primary-fixed has-[:checked]:border-primary">
+<input class="sr-only" name="interval" type="radio"/>
+<div class="flex items-center gap-xs">
+<span class="font-label-md text-label-md">Custom</span>
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Growth Visualization Tip -->
+<div class="bg-tertiary-fixed/30 rounded-lg p-md flex gap-md items-start border border-tertiary-fixed-dim/20">
+<span class="material-symbols-outlined text-tertiary text-[20px] mt-0.5">info</span>
+<p class="font-body-md text-label-sm text-on-tertiary-fixed-variant leading-relaxed">
+                        Setting an interval creates a "Growth Ring" around their photo. It will cool to <span class="text-secondary font-semibold">blue</span> if it's been too long, and warm to <span class="text-primary font-semibold">green</span> when you're connected.
+                    </p>
+</div>
+</form>
+</div>
+<!-- Action Area -->
+<div class="mt-xl space-y-md">
+<button class="w-full h-14 bg-primary text-on-primary rounded-xl font-headline-md text-label-md shadow-lg active:scale-95 transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+                Save Contact
+            </button>
+<button class="w-full h-12 bg-transparent text-outline font-label-md text-label-md hover:text-on-surface transition-colors">
+                Cancel
+            </button>
+</div>
+</main>
+<!-- BottomNavBar (Suppressed as per rules for sub-page/focused task, but structure provided if needed for top-level navigation) -->
+<!-- Not rendered here to prioritize the Add Contact focus journey -->
+<!-- Decorative Bottom Gradient for scroll depth -->
+<div class="fixed bottom-0 left-0 w-full h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+</body></html>

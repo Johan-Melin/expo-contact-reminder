@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f4f2ff",
+                    "secondary": "#005fad",
+                    "tertiary-container": "#5b624e",
+                    "on-tertiary-fixed": "#171e0e",
+                    "surface-tint": "#2c694e",
+                    "on-tertiary-fixed-variant": "#424937",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#58a3fe",
+                    "surface-container-high": "#e5e6ff",
+                    "surface-dim": "#d5d8f9",
+                    "surface-variant": "#dee0ff",
+                    "tertiary-fixed": "#dee6cc",
+                    "tertiary-fixed-dim": "#c2c9b1",
+                    "inverse-on-surface": "#f0efff",
+                    "primary-container": "#2d6a4f",
+                    "inverse-surface": "#2b2f48",
+                    "primary-fixed-dim": "#95d4b3",
+                    "on-primary-fixed-variant": "#0e5138",
+                    "on-secondary-fixed": "#001c39",
+                    "outline": "#707973",
+                    "surface-container-highest": "#dee0ff",
+                    "background": "#fbf8ff",
+                    "primary": "#0f5238",
+                    "on-primary": "#ffffff",
+                    "on-background": "#161a32",
+                    "on-secondary-fixed-variant": "#004884",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#003869",
+                    "on-primary-fixed": "#002114",
+                    "on-surface": "#161a32",
+                    "tertiary": "#434a38",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#95d4b3",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#a8e7c5",
+                    "surface-bright": "#fbf8ff",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#bfc9c1",
+                    "on-surface-variant": "#404943",
+                    "secondary-fixed": "#d4e3ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#d6ddc4",
+                    "primary-fixed": "#b1f0ce",
+                    "surface": "#fbf8ff",
+                    "secondary-fixed-dim": "#a4c9ff",
+                    "surface-container": "#ececff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "unit": "4px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "container-padding": "20px",
+                    "gutter": "12px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Be Vietnam Pro"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Be Vietnam Pro"],
+                    "label-md": ["Be Vietnam Pro"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .growth-ring {
+            background: conic-gradient(from 0deg, #0f5238 var(--progress), #e5e6ff var(--progress));
+        }
+        body {
+            background-color: #fbf8ff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface bg-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-16 max-w-[600px] mx-auto bg-[#f0f4f2] border-b border-emerald-900/10 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile photo" data-alt="A professional close-up portrait of a friendly woman with a warm smile, set against a soft-focus garden background. The lighting is natural and bright, echoing the light-mode aesthetic of the app. The colors are soft and muted, with gentle greens and warm skin tones, creating an empathetic and nurturing visual style consistent with the brand's digital gardener persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_UMC2-bTqaUMSiaGbnEurV1jUwGh5b1w22weUTvLrDvdXuZBL_pM0NqLj7JuT6I9oRmVrO4z3CfRyizjA1s8vqHP_oTata_8RTTSYAONLh3mpXS63LfY1mBXca16NOY4QNccuVD_3uqsIWHnOVFKrqA7NKoDSBYqnj-8m_nojLLs9KCe1SDK0cFqqdgQ9YDMCT-9b8nhjhWH4IOFWcXXAkBI79EdKQtUrs6B8eYwuTUrWYXvsBivjoo5x-wrT0cyTMLmRE20JhVs"/>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-emerald-900 font-headline-md">Garden</h1>
+</div>
+<button class="material-symbols-outlined text-emerald-800 hover:bg-emerald-50 transition-colors p-2 rounded-full active:scale-95 duration-150">
+            settings
+        </button>
+</header>
+<main class="pt-20 pb-32 px-container-padding max-w-[600px] mx-auto min-h-screen">
+<!-- Search and Filter Section -->
+<div class="mb-xl space-y-md">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-12 pl-12 pr-4 rounded-xl bg-white border-none shadow-[0_4px_12px_rgba(45,106,79,0.08)] focus:ring-2 focus:ring-primary-container text-body-md transition-all" placeholder="Search contacts..." type="text"/>
+</div>
+<div class="flex gap-sm overflow-x-auto pb-2 no-scrollbar">
+<button class="px-md py-xs rounded-full bg-primary-container text-on-primary-container font-label-md whitespace-nowrap">All</button>
+<button class="px-md py-xs rounded-full bg-surface-container-highest text-on-surface-variant font-label-md whitespace-nowrap">Family</button>
+<button class="px-md py-xs rounded-full bg-surface-container-highest text-on-surface-variant font-label-md whitespace-nowrap">Friends</button>
+<button class="px-md py-xs rounded-full bg-surface-container-highest text-on-surface-variant font-label-md whitespace-nowrap">Colleague</button>
+</div>
+</div>
+<!-- Section Title -->
+<div class="flex justify-between items-end mb-md">
+<h2 class="font-headline-md text-primary">Your Social Circle</h2>
+<span class="text-label-sm text-outline">24 Contacts</span>
+</div>
+<!-- Relationship Cards Grid -->
+<div class="space-y-md">
+<!-- Contact Card 1 -->
+<div class="bg-white p-container-padding rounded-xl shadow-[0_4px_12px_rgba(45,106,79,0.08)] border border-emerald-900/5 flex items-center gap-md relative overflow-hidden active:scale-[0.98] transition-transform duration-200">
+<div class="relative flex-shrink-0">
+<div class="w-14 h-14 rounded-full p-1 growth-ring" style="--progress: 75%;">
+<div class="w-full h-full rounded-full overflow-hidden border-2 border-white">
+<img alt="Marcus Chen" data-alt="A candid, high-quality portrait of a middle-aged man with a kind expression and gentle eyes. The setting is an outdoor cafe with soft afternoon light filtering through trees, creating organic shadows. The overall aesthetic is grounded and tactile, using a palette of soft browns, forest greens, and warm sunlight to evoke a dependable and nurturing relationship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByL4dPzX2u6IGhImd1rpH7GJ_rqmQx7Dozw-O-F6b5CD79UZV0jQ4cnsK61evFl7W9ZJfUWjbi5G2El0BuHamtiDqRyDEhdgyvLPeJ4ulK12zT46CDCytRm3UrfoAEZsfIKFh5u9VTMgt_QZELInRBQEL0JNv2sXQqs6OrXM6rlBaI4XDko4PaILwq4fpyeslGovOKLfeuSaKnJhDnnFpcuGr38U6EcHyEaI4m9l-jhm6yAffpjP7Bm2LSLw0ufh0vJ7UGfAA06eY"/>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-on-surface text-body-lg">Marcus Chen</h3>
+<span class="px-sm py-1 rounded bg-secondary-container/20 text-on-secondary-container text-label-sm font-semibold">Family</span>
+</div>
+<div class="flex items-center gap-sm mt-1">
+<span class="material-symbols-outlined text-[16px] text-primary">event_repeat</span>
+<p class="text-label-md text-outline">Weekly • 2 days left</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<button class="p-2 rounded-full bg-emerald-50 text-primary-container active:scale-90 transition-transform">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+</div>
+<!-- Contact Card 2 -->
+<div class="bg-white p-container-padding rounded-xl shadow-[0_4px_12px_rgba(45,106,79,0.08)] border border-emerald-900/5 flex items-center gap-md active:scale-[0.98] transition-transform duration-200">
+<div class="relative flex-shrink-0">
+<div class="w-14 h-14 rounded-full p-1 growth-ring" style="--progress: 30%;">
+<div class="w-full h-full rounded-full overflow-hidden border-2 border-white">
+<img alt="Elena Rodriguez" data-alt="A vibrant portrait of a young creative professional woman laughing. She is in a bright, modern studio space with plenty of white space and minimalist wooden furniture. The lighting is high-key and optimistic, emphasizing a clear, modern UI feel. The color story highlights soft mint and professional blues, reflecting an empathetic and organized social connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUUGH0mjOne0XxCfIvOMX17AiRIHQjcebDiEOKMSGjVZBJtf9Lvgr4-vHat_XiCGYkHyMAggBEd9nKOir2w8mhlflES5nDjTD9sfpAVFKdbfvaJXYW4Nrmux28rGRahiBwUitpGJI-ZcIIHg4ewPAn0lJ8Xx8dIfa3StAk-B3TfrMsQI9Dh86SZV8f3-8dU1FiMTuAF3drBqCAj2wXS4PQb1WxNNCowzka2AzI8GwPDdmGanMgv6XEu_ohhJGRrbkpdmP5_L2rfec"/>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-on-surface text-body-lg">Elena Rodriguez</h3>
+<span class="px-sm py-1 rounded bg-surface-container-high text-on-surface-variant text-label-sm font-semibold">Friend</span>
+</div>
+<div class="flex items-center gap-sm mt-1">
+<span class="material-symbols-outlined text-[16px] text-primary">event_repeat</span>
+<p class="text-label-md text-outline">Bi-weekly • Overdue</p>
+</div>
+</div>
+<button class="p-2 rounded-full bg-error-container/30 text-error active:scale-90 transition-transform">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+</div>
+<!-- Contact Card 3 -->
+<div class="bg-white p-container-padding rounded-xl shadow-[0_4px_12px_rgba(45,106,79,0.08)] border border-emerald-900/5 flex items-center gap-md active:scale-[0.98] transition-transform duration-200">
+<div class="relative flex-shrink-0">
+<div class="w-14 h-14 rounded-full p-1 growth-ring" style="--progress: 90%;">
+<div class="w-full h-full rounded-full overflow-hidden border-2 border-white">
+<img alt="David Park" data-alt="A calm and composed portrait of a man in a professional setting. He wears a smart casual blazer, standing against a background of textured grey stone and indoor plants. The lighting is diffused and balanced, avoiding harsh shadows. The visual mood is dependable and professional, aligned with the 'Colleague' label, featuring earthy greens and clean, functional minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIfsa65CAesa9h5Q2Cmc2qsVyTrbZVZpR7sihqLLXZyTqV6JAXwel1rWV7_1FXI5HEWnKPfF3h9IfCzv-5y-YOKBuVM6DOOn7JupOUTFOBpjV5QNYI9yY6dogkQgJE4w87OimvGTLf1MWQXmqc9qCGd0UCHTliOXIazD5RWq2ZRnI7-OA-ad3UP4oN1VFYLtExIv_bK48zKnnjpDNP4NJqTyYycs6Sa2RfuDpH3qCsV5FkmCAWdMEc1MpYLy7CYzqstwq2aIvtqzU"/>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-on-surface text-body-lg">David Park</h3>
+<span class="px-sm py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed-variant text-label-sm font-semibold">Colleague</span>
+</div>
+<div class="flex items-center gap-sm mt-1">
+<span class="material-symbols-outlined text-[16px] text-primary">event_repeat</span>
+<p class="text-label-md text-outline">Monthly • 12 days left</p>
+</div>
+</div>
+<button class="p-2 rounded-full bg-emerald-50 text-primary-container active:scale-90 transition-transform">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+<!-- Empty State Suggestion Card (Asymmetric Layout) -->
+<div class="mt-xl p-lg rounded-2xl bg-gradient-to-br from-primary-container to-primary text-on-primary-container shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-headline-md text-white mb-2">Grow your circle</h4>
+<p class="font-body-md text-on-primary-container/90 mb-lg">Add your first contact and start nurturing your relationships.</p>
+<button class="flex items-center gap-2 px-lg py-3 bg-white text-primary font-label-md rounded-xl shadow-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined">person_add</span>
+                        Get Started
+                    </button>
+</div>
+<!-- Abstract decorative element -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute right-4 top-4">
+<span class="material-symbols-outlined text-[64px] text-white/20" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB: Add Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-xl z-50 flex items-center justify-center active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-2 pb-safe px-4 max-w-[600px] mx-auto bg-white/90 backdrop-blur-md border-t border-emerald-900/5 shadow-[0_-4px_12px_rgba(45,106,79,0.08)] rounded-t-2xl">
+<a class="flex flex-col items-center justify-center text-emerald-700 bg-emerald-50 rounded-xl px-4 py-1 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">contacts</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">Contacts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1 hover:text-emerald-600 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1 hover:text-emerald-600 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">Reminders</span>
+</a>
+</nav>
+</body></html>

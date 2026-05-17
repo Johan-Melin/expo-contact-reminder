@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f4f2ff",
+                      "secondary": "#005fad",
+                      "tertiary-container": "#5b624e",
+                      "on-tertiary-fixed": "#171e0e",
+                      "surface-tint": "#2c694e",
+                      "on-tertiary-fixed-variant": "#424937",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#58a3fe",
+                      "surface-container-high": "#e5e6ff",
+                      "surface-dim": "#d5d8f9",
+                      "surface-variant": "#dee0ff",
+                      "tertiary-fixed": "#dee6cc",
+                      "tertiary-fixed-dim": "#c2c9b1",
+                      "inverse-on-surface": "#f0efff",
+                      "primary-container": "#2d6a4f",
+                      "inverse-surface": "#2b2f48",
+                      "primary-fixed-dim": "#95d4b3",
+                      "on-primary-fixed-variant": "#0e5138",
+                      "on-secondary-fixed": "#001c39",
+                      "outline": "#707973",
+                      "surface-container-highest": "#dee0ff",
+                      "background": "#fbf8ff",
+                      "primary": "#0f5238",
+                      "on-primary": "#ffffff",
+                      "on-background": "#161a32",
+                      "on-secondary-fixed-variant": "#004884",
+                      "on-error-container": "#93000a",
+                      "on-secondary-container": "#003869",
+                      "on-primary-fixed": "#002114",
+                      "on-surface": "#161a32",
+                      "tertiary": "#434a38",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#95d4b3",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#a8e7c5",
+                      "surface-bright": "#fbf8ff",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#bfc9c1",
+                      "on-surface-variant": "#404943",
+                      "secondary-fixed": "#d4e3ff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#d6ddc4",
+                      "primary-fixed": "#b1f0ce",
+                      "surface": "#fbf8ff",
+                      "secondary-fixed-dim": "#a4c9ff",
+                      "surface-container": "#ececff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "unit": "4px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "container-padding": "20px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Be Vietnam Pro"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-md": ["Be Vietnam Pro"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "label-sm": ["Be Vietnam Pro"],
+                      "label-md": ["Be Vietnam Pro"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #f0f4f2;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-16 max-w-[600px] mx-auto bg-[#f0f4f2] dark:bg-slate-950 shadow-sm dark:shadow-none border-b border-emerald-900/10 dark:border-emerald-100/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-emerald-100 border border-emerald-900/10">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly man in a minimalist setting. He has a warm smile and is lit by soft, natural morning light which highlights his features against a clean, out-of-focus emerald green office background. The photography style is modern and empathetic, consistent with a nurturing digital gardener aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIjHS6a-t91TdTc1aXh-2NRBVpMf1NVqq5dxYGddYp8BFDKyxXXBiJmkz_Pz3GVNeJNzA9CUjh4jIPc0SRaT_jreBKw4wxB2uUTsLas34yKHaRLsBo8TMcnev8JAYJ_VNosWNmAp6KYLLvXna-4kLAp5nqU9dJVcfyP_02Q5SZS5NAEhG06VUqru9R9J-HVkqt5ECWh8-yGtKQE621u4cUxVXhsOnUVjbgOOISxAQ-40_Un65IEs_C5DcIxaYPP-4wdzxbqjwEN5Y"/>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-emerald-900 dark:text-emerald-100 font-['Plus_Jakarta_Sans']">Garden</h1>
+</div>
+<button class="material-symbols-outlined text-emerald-800 dark:text-emerald-400 p-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors active:scale-95 duration-150 rounded-full" data-icon="settings">settings</button>
+</header>
+<!-- Main Content -->
+<main class="pt-24 pb-32 px-container-padding max-w-[600px] mx-auto min-h-screen">
+<!-- Page Header & Action -->
+<div class="flex justify-between items-end mb-xl">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant mb-1">Growth Journal</p>
+<h2 class="text-headline-lg font-headline-lg text-primary">History</h2>
+</div>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-lg py-3 rounded-xl shadow-[0_8px_16px_rgba(45,106,79,0.15)] active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span class="font-label-md text-label-md">Add</span>
+</button>
+</div>
+<!-- Chronological List -->
+<div class="space-y-md">
+<!-- Date Group -->
+<div class="flex items-center gap-4 mb-sm">
+<div class="h-[1px] flex-grow bg-outline-variant"></div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">This Week</span>
+<div class="h-[1px] flex-grow bg-outline-variant"></div>
+</div>
+<!-- History Item 1: John -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_rgba(45,106,79,0.06)] border border-emerald-900/5 flex items-center gap-md">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A warm portrait of a man named John with a kind expression. He is wearing a casual navy sweater, positioned in a brightly lit modern apartment with plants visible in the background. The lighting is soft and golden, suggesting a positive and healthy social connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf0IiQj9e9O_IKQdtfcLqtFLu9Ujzwoy5VbxYdfEgcvhELX5eWl6Fqr0aKDIZYKG3ZMdYLMz_6wLsSIRpq-g25VcR7L8VitR1mMuMOjq-u71RatT0AQwswfJnhGitM8KRZKcmBa0-KR7Wa506cPCINxrkeIl9OSBL8uXHm__Dcced_xJcpRshrqdQEOQM-sTCQR1hkTDr7QlLlAkRuQk0rIhcxJnehdbrs3Epd8dpGp_A0mnCIRJGZ82dVYHZkLfTM_zkU3RuvOZU"/>
+<!-- Growth Ring Metadata -->
+<div class="absolute -inset-1 border-2 border-primary rounded-full opacity-30"></div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="text-body-md font-headline-md text-on-surface">John</h3>
+<span class="text-label-sm font-label-sm text-outline">3 days ago</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="phone_in_talk">phone_in_talk</span>
+<span class="text-label-md font-label-md text-on-surface-variant">Phone call</span>
+</div>
+</div>
+</div>
+<!-- History Item 2: Sarah -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_rgba(45,106,79,0.06)] border border-emerald-900/5 flex items-center gap-md">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A joyful woman named Sarah laughing in a sun-drenched outdoor cafe. She has vibrant energy, with soft sunlight filtering through nearby leaves, creating organic dappled shadows. The aesthetic is clean and high-end, focusing on the warmth of human interaction." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv7iBC7VaNwWK5D49bvBG3maR7jNMWq9tuB44fLUbgS3SXo1LYcJ63TBbNGUEY_RbMzKMicZFzZMV-dz7Xwz6vdzFIM440yNMhe_Kzkb6TKtzK4ZBw6R8FQRDRcNM4lFt3V2N8IUXk5qHsbO_4aHLqOvap1dsGy58z7oGyAFVkgSKHx-rdnqB8k9AU9-YyTBsZSLXhsOqs-w3MIewR53GIE5hyNSwu5e9INC878TvM0R7eWPf39wyVjE9qeDvHYK6Ix7QPAbo8aOU"/>
+<div class="absolute -inset-1 border-2 border-secondary rounded-full opacity-30"></div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="text-body-md font-headline-md text-on-surface">Sarah</h3>
+<span class="text-label-sm font-label-sm text-outline">4 days ago</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-label-md font-label-md text-on-surface-variant">Message</span>
+</div>
+</div>
+</div>
+<!-- Date Group -->
+<div class="flex items-center gap-4 mt-lg mb-sm">
+<div class="h-[1px] flex-grow bg-outline-variant"></div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Last Week</span>
+<div class="h-[1px] flex-grow bg-outline-variant"></div>
+</div>
+<!-- History Item 3: Michael -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_rgba(45,106,79,0.06)] border border-emerald-900/5 flex items-center gap-md">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A detailed portrait of Michael, a middle-aged man with a thoughtful and dependable gaze. He is in a soft-focus garden setting during the golden hour, which casts a warm, nurturing light across the scene. The image evokes a sense of lasting, rooted friendship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIyVZ2PVRmB3Dtz6LepEX9MYUetQRtZ2nCmkyo2fTMuYA_xBaIbxrS0owRkgaTklc5fQmireNyHd7YnaT0gWWpykRlUlL7XKNaZuOa83FqJdci-dasBNeuyJLqpTAE7ZjPXWlvvGOaZvfwaURQZU7-eN71PvovkkwCCOgUOiIpe0Y9guxaz7sCIQDklpKmWwlXCXxgLOdxEtnmqMFm10chJ3zCkD6j6zpqOOPoMrwopS8KBhcQkSro-qRLarC68vLbyRO8njPLQK4"/>
+<div class="absolute -inset-1 border-2 border-tertiary rounded-full opacity-30"></div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="text-body-md font-headline-md text-on-surface">Michael</h3>
+<span class="text-label-sm font-label-sm text-outline">8 days ago</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="groups">groups</span>
+<span class="text-label-md font-label-md text-on-surface-variant">In person</span>
+</div>
+</div>
+</div>
+<!-- History Item 4: Elena -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_rgba(45,106,79,0.06)] border border-emerald-900/5 flex items-center gap-md">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A close-up portrait of Elena, who has a serene and empathetic expression. The background is a soft-focus library with warm wood tones and gentle indoor lighting. This high-quality digital photograph emphasizes the depth and value of long-term social circles." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsWm_-_szFA7_YVaT5-yHCrWt0YoqflRu2h3sQedjMPFeKkaqWaHvHsp6OtZmMlK8XhrZaGHm8SsyEol0OL-dftVRqF-CpHJ__puOjHRlDsQ-85EXAdmom94zxw_dsdG3C9DMwj8FJV0GGBF5lVxXMn7n_3fFgbr4HINY3pdDD7viPLHSehXLneKP-0aZWaH_fiW3TOCG0ikNUPzkdY26d0Mfm6r4MQCk52ELI0jlbB4zWYKSrwnqlArjuQBJlHKjqDRfgFcGyCNk"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="text-body-md font-headline-md text-on-surface">Elena</h3>
+<span class="text-label-sm font-label-sm text-outline">10 days ago</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="videocam">videocam</span>
+<span class="text-label-md font-label-md text-on-surface-variant">Video call</span>
+</div>
+</div>
+</div>
+<!-- Bento Statistics Section -->
+<div class="grid grid-cols-2 gap-md mt-xl">
+<div class="col-span-2 bg-emerald-900 text-white p-lg rounded-2xl relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="text-label-sm font-label-sm opacity-80 uppercase tracking-widest mb-1">Consistency Streak</h4>
+<p class="text-headline-lg font-headline-lg">12 Days</p>
+<p class="text-label-md font-body-md opacity-70 mt-2">You've nurtured 5 relationships this week. Keep growing!</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="local_florist">local_florist</span>
+</div>
+</div>
+<div class="bg-surface-container-high p-md rounded-2xl border border-primary/10">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="analytics">analytics</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Top Contact</p>
+<p class="text-body-md font-headline-md text-on-surface">John</p>
+</div>
+<div class="bg-surface-container-high p-md rounded-2xl border border-primary/10">
+<span class="material-symbols-outlined text-secondary mb-2" data-icon="speed">speed</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Avg. Gap</p>
+<p class="text-body-md font-headline-md text-on-surface">4.2 Days</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-2 pb-safe px-4 max-w-[600px] mx-auto bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-[0_-4px_12px_rgba(45,106,79,0.08)] rounded-t-2xl border-t border-emerald-900/5 dark:border-emerald-100/5">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1 hover:text-emerald-600 dark:hover:text-emerald-200 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="contacts">contacts</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">Contacts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/40 rounded-xl px-4 py-1 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1 hover:text-emerald-600 dark:hover:text-emerald-200 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">Reminders</span>
+</a>
+</nav>
+</body></html>

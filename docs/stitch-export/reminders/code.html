@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#f4f2ff",
+            "secondary": "#005fad",
+            "tertiary-container": "#5b624e",
+            "on-tertiary-fixed": "#171e0e",
+            "surface-tint": "#2c694e",
+            "on-tertiary-fixed-variant": "#424937",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "secondary-container": "#58a3fe",
+            "surface-container-high": "#e5e6ff",
+            "surface-dim": "#d5d8f9",
+            "surface-variant": "#dee0ff",
+            "tertiary-fixed": "#dee6cc",
+            "tertiary-fixed-dim": "#c2c9b1",
+            "inverse-on-surface": "#f0efff",
+            "primary-container": "#2d6a4f",
+            "inverse-surface": "#2b2f48",
+            "primary-fixed-dim": "#95d4b3",
+            "on-primary-fixed-variant": "#0e5138",
+            "on-secondary-fixed": "#001c39",
+            "outline": "#707973",
+            "surface-container-highest": "#dee0ff",
+            "background": "#fbf8ff",
+            "primary": "#0f5238",
+            "on-primary": "#ffffff",
+            "on-background": "#161a32",
+            "on-secondary-fixed-variant": "#004884",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#003869",
+            "on-primary-fixed": "#002114",
+            "on-surface": "#161a32",
+            "tertiary": "#434a38",
+            "error": "#ba1a1a",
+            "inverse-primary": "#95d4b3",
+            "on-secondary": "#ffffff",
+            "on-primary-container": "#a8e7c5",
+            "surface-bright": "#fbf8ff",
+            "on-tertiary": "#ffffff",
+            "outline-variant": "#bfc9c1",
+            "on-surface-variant": "#404943",
+            "secondary-fixed": "#d4e3ff",
+            "error-container": "#ffdad6",
+            "on-tertiary-container": "#d6ddc4",
+            "primary-fixed": "#b1f0ce",
+            "surface": "#fbf8ff",
+            "secondary-fixed-dim": "#a4c9ff",
+            "surface-container": "#ececff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "sm": "8px",
+            "xl": "32px",
+            "md": "16px",
+            "unit": "4px",
+            "xs": "4px",
+            "lg": "24px",
+            "container-padding": "20px",
+            "gutter": "12px"
+          },
+          "fontFamily": {
+            "body-lg": ["Be Vietnam Pro"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Be Vietnam Pro"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Be Vietnam Pro"],
+            "label-md": ["Be Vietnam Pro"]
+          },
+          "fontSize": {
+            "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+            "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      background-color: #fbf8ff;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tactile-card {
+      box-shadow: 0 4px 12px rgba(45, 106, 79, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .tactile-card:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 6px rgba(45, 106, 79, 0.05);
+    }
+    .growth-ring {
+      background: conic-gradient(from 0deg, #0f5238 var(--progress), transparent var(--progress));
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface selection:bg-primary-fixed">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-16 max-w-[600px] mx-auto bg-[#f0f4f2] border-b border-emerald-900/10 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A warm, professional headshot of a friendly user with a soft, out-of-focus garden background. The person has a kind expression, reflecting an empathetic and nurturing personality. Lighting is high-key and natural, creating a bright and clean modern light-mode aesthetic with soft green and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVOPn3O1xnI-OXpo9dcZwxEJNIviZMis3KIZnMebO3B18S_Tfz0pZ2Z81RdBy91mBUQWw-TteBaYwI9Fr1uRiC7rZN8CDZuCUgu88WnBl0XUVaZsUWCmp5_F8Qo2mTXxEo5PUpbEzW1cuY083S_MWTB_x1G_kWDMqLgQJO_7gWkUOA6rZOLSLqe9hFuBaqay4uqyVpM0d3tAN-3aYOHYwq_kvaPEKQHoc9mkCib3AP6tKiEh3yZ9V6vOvAaUE3i-y8alAmHMB_wts"/>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-emerald-900">Garden</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-emerald-50 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-emerald-800" data-icon="settings">settings</span>
+</button>
+</header>
+<main class="pt-20 pb-24 px-container-padding max-w-[600px] mx-auto min-h-screen">
+<!-- Hero/Summary Section -->
+<div class="mb-xl bg-primary-container rounded-xl p-6 text-on-primary-container shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md mb-xs">Relationship Garden</h2>
+<p class="font-body-md text-body-md opacity-90">3 friends need a little sunshine today.</p>
+</div>
+<div class="absolute -right-4 -bottom-4 w-32 h-32 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[120px]" data-icon="local_florist">local_florist</span>
+</div>
+</div>
+<!-- Overdue Section -->
+<section class="mb-xl">
+<div class="flex items-center gap-2 mb-md">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Overdue</h3>
+</div>
+<div class="grid gap-md">
+<!-- Overdue Card 1 -->
+<div class="tactile-card bg-surface-container-lowest rounded-xl p-md flex items-center gap-md border border-error-container">
+<div class="relative w-14 h-14 shrink-0">
+<div class="absolute inset-0 rounded-full border-4 border-surface-container-low"></div>
+<div class="absolute inset-0 rounded-full border-4 border-error border-t-transparent -rotate-45"></div>
+<img class="w-full h-full rounded-full object-cover p-1" data-alt="Close-up portrait of a woman with a warm, genuine smile. The background is a soft-focus interior with warm lighting. The image captures a sense of dependable friendship and emotional connection, consistent with a nurturing digital garden theme. High-quality photography with soft shadows and rich natural colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCENdQshb1_lfQeUCi3-wWoale8gutTUqsDGs8JglK1w0UpOLRjWZ6oo9ZiUICcBaVcW2vkbvdg_GaitbOG_6pdB3FKgqgkx1WJl7vDFXYPUWvw44y5qS8ywZIfaYYb3cMp--Z0WEmthiwFeoavrJF-Q59d-rDlFvboo0W1HqcJ-KBvkyfnG0uLHFVywmXLtyTpqwY2-X4T12pG7UQB7UZJhyqGBIG1WD_Nr3HqArA3y8YOsgoe0pJHJSCivQOfU1ZH8g8PLWI_Hsc"/>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Sarah Jenkins</h4>
+<p class="font-body-md text-body-md text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="priority_high">priority_high</span>
+              3 days overdue
+            </p>
+</div>
+<button class="bg-primary text-on-primary font-label-md px-4 py-2 rounded-full shadow-md active:scale-95 transition-transform">
+            Reach out
+          </button>
+</div>
+</div>
+</section>
+<!-- Upcoming Section -->
+<section class="mb-xl">
+<div class="flex items-center gap-2 mb-md">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Upcoming</h3>
+</div>
+<div class="grid gap-md">
+<!-- Upcoming Card 1 -->
+<div class="tactile-card bg-surface-container-lowest rounded-xl p-md flex items-center gap-md border border-outline-variant">
+<div class="relative w-14 h-14 shrink-0">
+<div class="absolute inset-0 rounded-full border-4 border-surface-container-low"></div>
+<div class="absolute inset-0 rounded-full border-4 border-secondary border-b-transparent rotate-90"></div>
+<img class="w-full h-full rounded-full object-cover p-1" data-alt="A portrait of a young man with glasses, looking thoughtful and approachable. Set in a modern, plant-filled cafe with soft afternoon sunlight streaming through the windows. The aesthetic is clean and modern, focusing on human connection and a dependable social lifestyle. Soft color palette with greens and warm wood tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApSgqysKILo4jmXVLhXZcIQkXC_G3C_bZUQMOsYd2BVfTRLb3kB5G-LrFlyjLPB4a96fuqNHEyt1COn6td11MZ00r8oB3P8iHXmvz1YWPsXt_9fjNyQovaaVoEJL_LrjiIlL9xzbrllLL_JR7kSi4z8WTW0gAoOLnD5gYosfk9drX5y8ca3EMWjoQycU7MprOEShgT4ah2fTgCIli_W99wIgJ8ymmbnJV2Irw4zC1WbhESNqIjjemBPE7k1e2ClRSn-zESU5c2CgM"/>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Marcus Chen</h4>
+<p class="font-body-md text-body-md text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+              Tomorrow, 2:00 PM
+            </p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-fixed text-on-secondary-fixed-variant active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</button>
+</div>
+<!-- Upcoming Card 2 -->
+<div class="tactile-card bg-surface-container-lowest rounded-xl p-md flex items-center gap-md border border-outline-variant">
+<div class="relative w-14 h-14 shrink-0">
+<div class="absolute inset-0 rounded-full border-4 border-surface-container-low"></div>
+<div class="absolute inset-0 rounded-full border-4 border-secondary opacity-40 border-l-transparent"></div>
+<img class="w-full h-full rounded-full object-cover p-1" data-alt="Professional headshot of a mature person with expressive eyes and a friendly demeanor. The lighting is soft and flattering, set against a blurred urban garden backdrop. The overall mood is nurturing and sophisticated, emphasizing the value of long-term meaningful connections within a modern interface design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKPq1VtCdr93VeJ84K6sojdt4UadVEBL6THu71qwbZZT3DQ3aPuTHenIFRhKZkXjKO_BtMLWspwFS8sUFjTzXJ_jYscT8wfPZH3lb4rczOr0mcJ97RwXhEM5VCaJ6pPiWDEv7oXjgM5K4uO_mtZHlEXRgUxRI8pXEqtbgocTIBJGNmQdruigwqvPF9Ybvvuv-3jwVkqe_wFmU9iXT5YGGwZPf_2EqtPi7pDJEA1B4AJ1mpDlzDQ2l2CbSwHQB1zc5F2qLWLLII9-0"/>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Elena Rodriguez</h4>
+<p class="font-body-md text-body-md text-secondary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="calendar_today">calendar_today</span>
+              48 hours left
+            </p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-fixed text-on-secondary-fixed-variant active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+</button>
+</div>
+</div>
+</section>
+<!-- On Track Section -->
+<section>
+<div class="flex items-center gap-2 mb-md">
+<span class="w-2 h-2 rounded-full bg-primary-fixed"></span>
+<h3 class="font-headline-md text-headline-md text-on-surface">On Track</h3>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<!-- Small Grid Card 1 -->
+<div class="tactile-card bg-surface-container-low rounded-xl p-md border border-primary-fixed/30 text-center">
+<div class="w-12 h-12 mx-auto mb-sm rounded-full border-2 border-primary-fixed p-0.5">
+<img class="w-full h-full rounded-full object-cover" data-alt="Candid photo of a joyful person laughing, captured in a bright outdoor setting with natural greenery. The mood is high-energy and positive, reflecting a thriving and healthy relationship. The visual style is crisp and modern with a focus on tactile textures and light-mode color harmony." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIQDvGdmG2KoK6U4VzXJjzxiCFQVbEkm8RRxcXpAN5zeK_gwKMJnkxxRDOcv10EzYjCLONvoAV47gg8MG6VRl0M1RHzgM3-eUQr3xWQ2aTKQaPin1_v5uP0rhgh8X_yOm96C1TKvM_jRfyyPRI1Bfw6YhIcccDGThQzdN_hqHlvLH0kwNYbY4o17amqbRXjkbJdCgnRVTxrzs3Fj2-2lHa3Hfl4H-zZxZ8K03c1BJ6btHY-O8sKC3WwxrG_9zqhW7GX8p_lhuT4Bw"/>
+</div>
+<h4 class="font-label-sm text-label-sm text-on-surface truncate">David Kim</h4>
+<p class="text-[10px] uppercase tracking-wider text-primary font-bold">Growing</p>
+</div>
+<!-- Small Grid Card 2 -->
+<div class="tactile-card bg-surface-container-low rounded-xl p-md border border-primary-fixed/30 text-center">
+<div class="w-12 h-12 mx-auto mb-sm rounded-full border-2 border-primary-fixed p-0.5">
+<img class="w-full h-full rounded-full object-cover" data-alt="Portrait of an artist in their bright, airy studio filled with canvases and plants. The atmosphere is creative and nurturing, emphasizing meaningful shared interests. The lighting is diffused and natural, matching the soft, tactile modernism of the overall UI design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxhb1FGLkTjQl2Q3U1vBsSWZ-jiJcqG_g_9o-AqfpvSxLCROLsPAxZmKTYOYsYsLLn1b_AniTkLIWWPknuQSRyUw7xtFBWAT5iKa0jy0qbdeDXdFaoKH1o4yBTAJ_yK1UjJiU3Kyh2aHCjVacQsOtxR3OC9qFksqNk5__-Lx8ghMPqDFYfgpLUiZSwvRWU2GFJcE1OWtJFk4ZFmABmwXfX5WB3yq1ceXACQtrkvRAjSJtKIVouYba1WfSsrC-eqC2xc49qhbJIFLA"/>
+</div>
+<h4 class="font-label-sm text-label-sm text-on-surface truncate">Sophie Ward</h4>
+<p class="text-[10px] uppercase tracking-wider text-primary font-bold">Stable</p>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB (Contextually relevant for Reminders) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-xl flex items-center justify-center active:scale-90 transition-all z-50">
+<span class="material-symbols-outlined" data-icon="add_task">add_task</span>
+</button>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-2 pb-safe px-4 max-w-[600px] mx-auto bg-white/90 backdrop-blur-md border-t border-emerald-900/5 shadow-[0_-4px_12px_rgba(45,106,79,0.08)] rounded-t-2xl">
+<a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1 hover:text-emerald-600 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="contacts">contacts</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">Contacts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1 hover:text-emerald-600 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-emerald-700 bg-emerald-50 rounded-xl px-4 py-1 active:scale-90 transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[12px] font-medium">Reminders</span>
+</a>
+</nav>
+</body></html>
