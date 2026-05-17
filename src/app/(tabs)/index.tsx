@@ -12,15 +12,14 @@ import {
 import { AppHeader } from '@/components/app-header';
 import { SectionHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-import {
-  onTrackContacts,
-  overdueReminders,
-  reminderSummary,
-  upcomingReminders,
-} from '@/data/mock-app-data';
+import { buildReminderSummary, buildReminders } from '@/lib/app-selectors';
+import { useAppData } from '@/state/app-data';
 
 export default function RemindersScreen() {
   const router = useRouter();
+  const { contacts, events } = useAppData();
+  const reminderData = buildReminders(contacts, events);
+  const reminderSummary = buildReminderSummary(contacts, events);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -36,18 +35,18 @@ export default function RemindersScreen() {
         </View>
 
         <SectionHeader color="#ba1a1a" title="Overdue" />
-        {overdueReminders.map((reminder) => (
+        {reminderData.overdue.map((reminder) => (
           <OverdueReminderCard key={reminder.name} {...reminder} />
         ))}
 
         <SectionHeader color="#58a3fe" title="Upcoming" />
-        {upcomingReminders.map((reminder) => (
+        {reminderData.upcoming.map((reminder) => (
           <UpcomingReminderCard key={reminder.name} {...reminder} />
         ))}
 
         <SectionHeader color="#95d4b3" title="On Track" />
         <View style={styles.trackGrid}>
-          {onTrackContacts.map((contact) => (
+          {reminderData.onTrack.map((contact) => (
             <OnTrackContactCard key={contact.name} {...contact} />
           ))}
         </View>

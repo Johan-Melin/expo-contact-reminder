@@ -15,7 +15,8 @@ import {
 import { AvatarRing } from '@/components/app-primitives';
 import { ModalHeader } from '@/components/modal-header';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-import { contacts } from '@/data/mock-app-data';
+import { StoredConnectionType } from '@/data/mock-app-data';
+import { useAppData } from '@/state/app-data';
 
 const eventTypes = [
   { label: 'Phone Call', icon: 'phone-in-talk-outline' },
@@ -24,15 +25,15 @@ const eventTypes = [
   { label: 'Video Call', icon: 'video-outline' },
 ] as const;
 
-type EventType = (typeof eventTypes)[number]['label'];
-
 export default function AddEventScreen() {
   const router = useRouter();
+  const { contacts, addEvent } = useAppData();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedContact, setSelectedContact] = useState(contacts[0]?.name ?? '');
+  const [selectedContactId, setSelectedContactId] = useState(contacts[0]?.id ?? '');
   const [eventDate, setEventDate] = useState('2026-05-17');
-  const [eventType, setEventType] = useState<EventType>('Phone Call');
+  const [eventType, setEventType] = useState<StoredConnectionType>('Phone Call');
   const [notes, setNotes] = useState('');
+  const canSave = Boolean(selectedContactId) && Boolean(eventDate.trim());
 
   const visibleContacts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -66,11 +67,11 @@ export default function AddEventScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}>
             {visibleContacts.map((contact) => {
-              const isSelected = contact.name === selectedContact;
+              const isSelected = contact.id === selectedContactId;
               return (
                 <Pressable
                   key={contact.name}
-                  onPress={() => setSelectedContact(contact.name)}
+                  onPress={() => setSelectedContactId(contact.id)}
                   style={styles.personChip}>
                   <AvatarRing
                     accent={isSelected ? AppColors.brand : '#d9dcff'}
@@ -142,7 +143,18 @@ export default function AddEventScreen() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <Pressable onPress={() => router.back()} style={styles.logButton}>
+        <Pressable
+          disabled={!canSave}
+          onPress={() => {
+            addEvent({
+              contactId: selectedContactId,
+              date: eventDate,
+              type: eventType,
+              notes,
+            });
+            router.back();
+          }}
+          style={[styles.logButton, !canSave && styles.logButtonDisabled]}>
           <MaterialCommunityIcons color="#ffffff" name="leaf" size={22} />
           <Text style={styles.logButtonText}>Log Event</Text>
         </Pressable>
@@ -280,6 +292,9 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 10 },
     elevation: 4,
+  },
+  logButtonDisabled: {
+    opacity: 0.55,
   },
   logButtonText: {
     color: '#ffffff',

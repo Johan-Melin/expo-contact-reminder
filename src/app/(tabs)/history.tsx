@@ -7,14 +7,13 @@ import { HistoryEntryCard, MetricCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
 import { TimelineHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-import {
-  historyLastWeek,
-  historySummary,
-  historyThisWeek,
-} from '@/data/mock-app-data';
+import { buildHistoryEntries } from '@/lib/app-selectors';
+import { useAppData } from '@/state/app-data';
 
 export default function HistoryScreen() {
   const router = useRouter();
+  const { contacts, events } = useAppData();
+  const history = buildHistoryEntries(contacts, events);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -23,8 +22,8 @@ export default function HistoryScreen() {
 
         <View style={styles.headerRow}>
           <View style={styles.headerCopy}>
-            <Text style={styles.eyebrow}>{historySummary.eyebrow}</Text>
-            <Text style={styles.title}>{historySummary.title}</Text>
+            <Text style={styles.eyebrow}>Growth Journal</Text>
+            <Text style={styles.title}>History</Text>
           </View>
           <Pressable onPress={() => router.push('/add-event')} style={styles.addButton}>
             <MaterialCommunityIcons color="#ffffff" name="plus" size={24} />
@@ -32,21 +31,21 @@ export default function HistoryScreen() {
           </Pressable>
         </View>
 
-        <HistorySection title="This Week" entries={historyThisWeek} />
-        <HistorySection title="Last Week" entries={historyLastWeek} />
+        <HistorySection title="This Week" entries={history.thisWeek} />
+        <HistorySection title="Last Week" entries={history.lastWeek} />
 
         <View style={styles.streakCard}>
           <View style={styles.streakIcon}>
             <MaterialCommunityIcons color="#6ba586" name="flower-outline" size={118} />
           </View>
-          <Text style={styles.streakLabel}>{historySummary.streakLabel}</Text>
-          <Text style={styles.streakValue}>{historySummary.streakValue}</Text>
-          <Text style={styles.streakBody}>{historySummary.streakBody}</Text>
+          <Text style={styles.streakLabel}>CONSISTENCY STREAK</Text>
+          <Text style={styles.streakValue}>{events.length} Events</Text>
+          <Text style={styles.streakBody}>Your recent connection log is growing. Keep it consistent.</Text>
         </View>
 
         <View style={styles.metricsRow}>
-          <MetricCard color="#0f5238" icon="chart-box-outline" label="Top Contact" value={historySummary.topContact} />
-          <MetricCard color="#005fad" icon="speedometer" label="Avg. Gap" value={historySummary.averageGap} />
+          <MetricCard color="#0f5238" icon="chart-box-outline" label="Top Contact" value={history.topContact} />
+          <MetricCard color="#005fad" icon="speedometer" label="Avg. Gap" value={history.averageGap} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -58,7 +57,7 @@ function HistorySection({
   entries,
 }: {
   title: string;
-  entries: typeof historyThisWeek;
+  entries: import('@/data/mock-app-data').HistoryEntry[];
 }) {
   return (
     <View style={styles.section}>

@@ -7,16 +7,20 @@ import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View 
 import { AppFab, ContactCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-import { ContactFilter, contactFilters, contacts } from '@/data/mock-app-data';
+import { ContactFilter, contactFilters } from '@/data/mock-app-data';
+import { buildContactCards } from '@/lib/app-selectors';
+import { useAppData } from '@/state/app-data';
 
 export default function ContactsScreen() {
   const router = useRouter();
+  const { contacts, events } = useAppData();
   const [activeFilter, setActiveFilter] = useState<ContactFilter>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const deferredQuery = useDeferredValue(searchQuery);
   const normalizedQuery = deferredQuery.trim().toLowerCase();
+  const contactCards = buildContactCards(contacts, events);
 
-  const filteredContacts = contacts.filter((contact) => {
+  const filteredContacts = contactCards.filter((contact) => {
     const matchesFilter =
       activeFilter === 'All' ||
       contact.tag.toLowerCase() === activeFilter.toLowerCase().replace(/s$/, '');

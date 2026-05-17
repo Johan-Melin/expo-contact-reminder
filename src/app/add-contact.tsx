@@ -12,19 +12,20 @@ import {
 } from 'react-native';
 
 import { AppColors, AppSpacing } from '@/constants/app-design';
-import { contactFilters } from '@/data/mock-app-data';
+import { StoredInterval, StoredRelationship } from '@/data/mock-app-data';
 import { ModalHeader } from '@/components/modal-header';
+import { useAppData } from '@/state/app-data';
 
 const intervalOptions = ['Weekly', 'Bi-weekly', 'Monthly', 'Custom'] as const;
-type IntervalOption = (typeof intervalOptions)[number];
-const relationshipOptions = [...contactFilters, 'Other'] as const;
-type RelationshipOption = (typeof relationshipOptions)[number];
+const relationshipOptions = ['Family', 'Friend', 'Colleague', 'Other'] as const;
 
 export default function AddContactScreen() {
   const router = useRouter();
+  const { addContact } = useAppData();
   const [name, setName] = useState('');
-  const [relationship, setRelationship] = useState<RelationshipOption>('Family');
-  const [interval, setInterval] = useState<IntervalOption>('Weekly');
+  const [relationship, setRelationship] = useState<StoredRelationship>('Family');
+  const [interval, setInterval] = useState<StoredInterval>('Weekly');
+  const canSave = name.trim().length > 0;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -66,7 +67,7 @@ export default function AddContactScreen() {
                 return (
                   <Pressable
                     key={option}
-                    onPress={() => setRelationship(option)}
+                    onPress={() => setRelationship(option as StoredRelationship)}
                     style={[styles.relationshipChip, isActive && styles.relationshipChipActive]}>
                     <Text style={[styles.relationshipChipText, isActive && styles.relationshipChipTextActive]}>
                       {option}
@@ -85,7 +86,7 @@ export default function AddContactScreen() {
                 return (
                   <Pressable
                     key={option}
-                    onPress={() => setInterval(option)}
+                    onPress={() => setInterval(option as StoredInterval)}
                     style={[styles.intervalTile, isActive && styles.intervalTileActive]}>
                     <Text style={[styles.intervalTileText, isActive && styles.intervalTileTextActive]}>
                       {option}
@@ -116,7 +117,17 @@ export default function AddContactScreen() {
         </View>
 
         <View style={styles.actions}>
-          <Pressable onPress={() => router.back()} style={styles.primaryButton}>
+          <Pressable
+            disabled={!canSave}
+            onPress={() => {
+              addContact({
+                name,
+                relationship,
+                interval,
+              });
+              router.back();
+            }}
+            style={[styles.primaryButton, !canSave && styles.primaryButtonDisabled]}>
             <MaterialCommunityIcons color="#ffffff" name="leaf" size={22} />
             <Text style={styles.primaryButtonText}>Save Contact</Text>
           </Pressable>
@@ -286,6 +297,9 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 10 },
     elevation: 4,
+  },
+  primaryButtonDisabled: {
+    opacity: 0.55,
   },
   primaryButtonText: {
     color: '#ffffff',
