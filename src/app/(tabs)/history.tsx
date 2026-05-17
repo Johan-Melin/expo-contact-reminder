@@ -2,11 +2,11 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { HistoryEntryCard, MetricCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
-import { AvatarRing, TimelineHeader } from '@/components/app-primitives';
+import { TimelineHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
 import {
-  HistoryEntry,
   historyLastWeek,
   historySummary,
   historyThisWeek,
@@ -50,55 +50,22 @@ export default function HistoryScreen() {
   );
 }
 
-function HistorySection({ title, entries }: { title: string; entries: HistoryEntry[] }) {
+function HistorySection({
+  title,
+  entries,
+}: {
+  title: string;
+  entries: typeof historyThisWeek;
+}) {
   return (
     <View style={styles.section}>
       <TimelineHeader title={title} />
 
       <View style={styles.entryStack}>
         {entries.map((entry) => (
-          <HistoryCard key={`${title}-${entry.name}`} {...entry} />
+          <HistoryEntryCard key={`${title}-${entry.name}`} {...entry} />
         ))}
       </View>
-    </View>
-  );
-}
-
-function HistoryCard({ name, age, mode, initials, avatar, ring, icon, iconColor }: HistoryEntry) {
-  return (
-    <View style={styles.historyCard}>
-      <AvatarRing accent={ring} color={avatar} initials={initials} outerSize={66} innerSize={50} textSize={18} />
-
-      <View style={styles.historyCopy}>
-        <View style={styles.historyTopRow}>
-          <Text style={styles.historyName}>{name}</Text>
-          <Text style={styles.historyAge}>{age}</Text>
-        </View>
-        <View style={styles.historyModeRow}>
-          <MaterialCommunityIcons color={iconColor} name={icon} size={20} />
-          <Text style={styles.historyMode}>{mode}</Text>
-        </View>
-      </View>
-    </View>
-  );
-}
-
-function MetricCard({
-  color,
-  icon,
-  label,
-  value,
-}: {
-  color: string;
-  icon: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
-  label: string;
-  value: string;
-}) {
-  return (
-    <View style={styles.metricCard}>
-      <MaterialCommunityIcons color={color} name={icon} size={28} />
-      <Text style={styles.metricLabel}>{label}</Text>
-      <Text style={styles.metricValue}>{value}</Text>
     </View>
   );
 }
@@ -157,49 +124,6 @@ const styles = StyleSheet.create({
   entryStack: {
     gap: 16,
   },
-  historyCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 24,
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 18,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
-  },
-  historyCopy: {
-    flex: 1,
-    gap: 10,
-  },
-  historyTopRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: 12,
-  },
-  historyName: {
-    color: '#161a32',
-    fontSize: 20,
-    fontWeight: '500',
-  },
-  historyAge: {
-    color: '#707973',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  historyModeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  historyMode: {
-    color: '#2e3831',
-    fontSize: 18,
-    fontWeight: '600',
-  },
   streakCard: {
     backgroundColor: '#0f5238',
     borderRadius: 30,
@@ -241,26 +165,5 @@ const styles = StyleSheet.create({
   metricsRow: {
     flexDirection: 'row',
     gap: 16,
-  },
-  metricCard: {
-    flex: 1,
-    backgroundColor: '#d9dcff',
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: '#c8cff5',
-    padding: 22,
-    gap: 12,
-    minHeight: 160,
-  },
-  metricLabel: {
-    color: '#434a38',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  metricValue: {
-    color: '#161a32',
-    fontSize: 18,
-    lineHeight: 26,
-    fontWeight: '500',
   },
 });

@@ -1,13 +1,12 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { AppFab, ContactCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
-import { AvatarRing } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-import { Contact, contactFilters, contacts } from '@/data/mock-app-data';
+import { contactFilters, contacts } from '@/data/mock-app-data';
 
 export default function ContactsScreen() {
   return (
@@ -61,51 +60,8 @@ export default function ContactsScreen() {
         </View>
       </ScrollView>
 
-      <Pressable style={styles.fab}>
-        <AntDesign color="#ffffff" name="plus" size={30} />
-      </Pressable>
+      <AppFab icon="plus" />
     </SafeAreaView>
-  );
-}
-
-function ContactCard({
-  name,
-  cadence,
-  urgency,
-  tag,
-  accent,
-  avatar,
-  initials,
-  actionIcon,
-  actionColor,
-  actionBackground,
-  tagBackground,
-  tagColor,
-}: Contact) {
-  return (
-    <View style={styles.contactCard}>
-      <AvatarRing accent={accent} color={avatar} initials={initials} outerSize={74} innerSize={56} textSize={18} />
-
-      <View style={styles.contactCopy}>
-        <View style={styles.nameRow}>
-          <Text style={styles.contactName}>{name}</Text>
-          <View style={[styles.tagPill, { backgroundColor: tagBackground }]}>
-            <Text style={[styles.tagText, { color: tagColor }]}>{tag}</Text>
-          </View>
-        </View>
-
-        <View style={styles.metaRow}>
-          <MaterialCommunityIcons color="#0f5238" name="calendar-refresh-outline" size={20} />
-          <Text style={styles.metaText}>
-            {cadence} • {urgency}
-          </Text>
-        </View>
-      </View>
-
-      <Pressable style={[styles.actionCircle, { backgroundColor: actionBackground }]}>
-        <MaterialCommunityIcons color={actionColor} name={actionIcon} size={26} />
-      </Pressable>
-    </View>
   );
 }
 
@@ -183,61 +139,6 @@ const styles = StyleSheet.create({
   cardStack: {
     gap: 18,
   },
-  contactCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 26,
-    padding: 22,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 18,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 3,
-  },
-  contactCopy: {
-    flex: 1,
-    gap: 10,
-  },
-  nameRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: 12,
-  },
-  contactName: {
-    flex: 1,
-    color: '#161a32',
-    fontSize: 22,
-    fontWeight: '500',
-  },
-  tagPill: {
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  tagText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  metaText: {
-    color: '#707973',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  actionCircle: {
-    width: 78,
-    height: 78,
-    borderRadius: 39,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   emptyStateCard: {
     backgroundColor: '#2d6a4f',
     borderRadius: 30,
@@ -289,21 +190,5 @@ const styles = StyleSheet.create({
     color: '#0f5238',
     fontSize: 20,
     fontWeight: '500',
-  },
-  fab: {
-    position: 'absolute',
-    right: 24,
-    bottom: AppSpacing.fabBottom,
-    width: 64,
-    height: 64,
-    borderRadius: 22,
-    backgroundColor: '#0f5238',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.22,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 4,
   },
 });
