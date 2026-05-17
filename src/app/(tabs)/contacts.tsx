@@ -1,5 +1,6 @@
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useRouter } from 'expo-router';
 import React, { useDeferredValue, useState } from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -9,6 +10,7 @@ import { AppColors, AppSpacing } from '@/constants/app-design';
 import { ContactFilter, contactFilters, contacts } from '@/data/mock-app-data';
 
 export default function ContactsScreen() {
+  const router = useRouter();
   const [activeFilter, setActiveFilter] = useState<ContactFilter>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const deferredQuery = useDeferredValue(searchQuery);
@@ -117,14 +119,14 @@ export default function ContactsScreen() {
           <Text style={styles.emptyStateBody}>
             Add your first contact and start nurturing your relationships.
           </Text>
-          <Pressable style={styles.emptyStateButton}>
+          <Pressable onPress={() => router.push('/add-contact')} style={styles.emptyStateButton}>
             <MaterialCommunityIcons color="#0f5238" name="account-plus-outline" size={22} />
             <Text style={styles.emptyStateButtonText}>Get Started</Text>
           </Pressable>
         </View>
       </ScrollView>
 
-      <AppFab icon="plus" />
+      <AppFab icon="plus" onPress={() => router.push('/add-contact')} />
     </SafeAreaView>
   );
 }

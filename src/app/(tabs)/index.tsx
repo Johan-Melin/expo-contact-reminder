@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -19,6 +20,8 @@ import {
 } from '@/data/mock-app-data';
 
 export default function RemindersScreen() {
+  const router = useRouter();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -50,7 +53,7 @@ export default function RemindersScreen() {
         </View>
       </ScrollView>
 
-      <AppFab icon="clipboard-check-outline" plus />
+      <AppFab icon="clipboard-check-outline" onPress={() => router.push('/add-event')} plus />
     </SafeAreaView>
   );
 }

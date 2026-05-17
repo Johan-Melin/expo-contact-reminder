@@ -166,12 +166,14 @@ export function MetricCard({
 export function AppFab({
   icon,
   plus = false,
+  onPress,
 }: {
   icon: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
   plus?: boolean;
+  onPress?: () => void;
 }) {
   return (
-    <Pressable style={styles.fab}>
+    <Pressable onPress={onPress} style={styles.fab}>
       <MaterialCommunityIcons color="#ffffff" name={icon} size={28} />
       {plus ? <AntDesign color="#ffffff" name="plus" size={14} style={styles.fabPlus} /> : null}
     </Pressable>

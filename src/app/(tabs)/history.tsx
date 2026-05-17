@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -13,6 +14,8 @@ import {
 } from '@/data/mock-app-data';
 
 export default function HistoryScreen() {
+  const router = useRouter();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -23,7 +26,7 @@ export default function HistoryScreen() {
             <Text style={styles.eyebrow}>{historySummary.eyebrow}</Text>
             <Text style={styles.title}>{historySummary.title}</Text>
           </View>
-          <Pressable style={styles.addButton}>
+          <Pressable onPress={() => router.push('/add-event')} style={styles.addButton}>
             <MaterialCommunityIcons color="#ffffff" name="plus" size={24} />
             <Text style={styles.addButtonText}>Add</Text>
           </Pressable>
