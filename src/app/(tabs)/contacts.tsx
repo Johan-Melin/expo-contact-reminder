@@ -1,14 +1,43 @@
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import React from 'react';
-import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useDeferredValue, useState } from 'react';
+import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { AppFab, ContactCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-import { contactFilters, contacts } from '@/data/mock-app-data';
+import { ContactFilter, contactFilters, contacts } from '@/data/mock-app-data';
 
 export default function ContactsScreen() {
+  const [activeFilter, setActiveFilter] = useState<ContactFilter>('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const deferredQuery = useDeferredValue(searchQuery);
+  const normalizedQuery = deferredQuery.trim().toLowerCase();
+
+  const filteredContacts = contacts.filter((contact) => {
+    const matchesFilter =
+      activeFilter === 'All' ||
+      contact.tag.toLowerCase() === activeFilter.toLowerCase().replace(/s$/, '');
+
+    if (!matchesFilter) {
+      return false;
+    }
+
+    if (!normalizedQuery) {
+      return true;
+    }
+
+    return (
+      contact.name.toLowerCase().includes(normalizedQuery) ||
+      contact.tag.toLowerCase().includes(normalizedQuery) ||
+      contact.cadence.toLowerCase().includes(normalizedQuery) ||
+      contact.urgency.toLowerCase().includes(normalizedQuery)
+    );
+  });
+
+  const isFiltered = activeFilter !== 'All' || normalizedQuery.length > 0;
+  const contactCountLabel = `${filteredContacts.length} Contact${filteredContacts.length === 1 ? '' : 's'}`;
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -16,15 +45,28 @@ export default function ContactsScreen() {
 
         <View style={styles.searchBox}>
           <Feather color="#707973" name="search" size={28} />
-          <Text style={styles.searchText}>Search contacts...</Text>
+          <TextInput
+            onChangeText={setSearchQuery}
+            placeholder="Search contacts..."
+            placeholderTextColor="#67708b"
+            style={styles.searchInput}
+            value={searchQuery}
+          />
+          {searchQuery ? (
+            <Pressable hitSlop={8} onPress={() => setSearchQuery('')} style={styles.clearButton}>
+              <Feather color="#67708b" name="x" size={20} />
+            </Pressable>
+          ) : null}
         </View>
 
         <View style={styles.filterRow}>
-          {contactFilters.map((filter, index) => {
-            const isActive = index === 0;
+          {contactFilters.map((filter) => {
+            const isActive = filter === activeFilter;
             return (
               <Pressable
+                accessibilityRole="button"
                 key={filter}
+                onPress={() => setActiveFilter(filter)}
                 style={[styles.filterChip, isActive ? styles.filterChipActive : styles.filterChipIdle]}>
                 <Text style={[styles.filterText, isActive ? styles.filterTextActive : styles.filterTextIdle]}>
                   {filter}
@@ -36,14 +78,36 @@ export default function ContactsScreen() {
 
         <View style={styles.sectionTitleRow}>
           <Text style={styles.sectionTitle}>Your Social Circle</Text>
-          <Text style={styles.sectionCount}>24 Contacts</Text>
+          <Text style={styles.sectionCount}>{contactCountLabel}</Text>
         </View>
 
-        <View style={styles.cardStack}>
-          {contacts.map((contact) => (
-            <ContactCard key={contact.name} {...contact} />
-          ))}
-        </View>
+        {filteredContacts.length ? (
+          <View style={styles.cardStack}>
+            {filteredContacts.map((contact) => (
+              <ContactCard key={contact.name} {...contact} />
+            ))}
+          </View>
+        ) : (
+          <View style={styles.noResultsCard}>
+            <Feather color="#0f5238" name="search" size={28} />
+            <Text style={styles.noResultsTitle}>No matching contacts</Text>
+            <Text style={styles.noResultsBody}>
+              {isFiltered
+                ? 'Try a different search or filter to find someone in your circle.'
+                : 'Add your first contact to start building your relationship garden.'}
+            </Text>
+            {isFiltered ? (
+              <Pressable
+                onPress={() => {
+                  setActiveFilter('All');
+                  setSearchQuery('');
+                }}
+                style={styles.resetButton}>
+                <Text style={styles.resetButtonText}>Reset filters</Text>
+              </Pressable>
+            ) : null}
+          </View>
+        )}
 
         <View style={styles.emptyStateCard}>
           <View style={styles.emptyStateIcon}>
@@ -90,10 +154,19 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 8 },
     elevation: 3,
   },
-  searchText: {
+  searchInput: {
+    flex: 1,
     color: '#67708b',
     fontSize: 20,
     fontWeight: '400',
+    paddingVertical: 0,
+  },
+  clearButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   filterRow: {
     flexDirection: 'row',
@@ -138,6 +211,41 @@ const styles = StyleSheet.create({
   },
   cardStack: {
     gap: 18,
+  },
+  noResultsCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 26,
+    padding: 28,
+    alignItems: 'flex-start',
+    gap: 12,
+    shadowColor: '#2d6a4f',
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 3,
+  },
+  noResultsTitle: {
+    color: '#161a32',
+    fontSize: 22,
+    fontWeight: '600',
+  },
+  noResultsBody: {
+    color: '#67708b',
+    fontSize: 17,
+    lineHeight: 26,
+    maxWidth: 320,
+  },
+  resetButton: {
+    marginTop: 6,
+    backgroundColor: '#e8f7ef',
+    borderRadius: 999,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+  },
+  resetButtonText: {
+    color: '#0f5238',
+    fontSize: 16,
+    fontWeight: '600',
   },
   emptyStateCard: {
     backgroundColor: '#2d6a4f',
