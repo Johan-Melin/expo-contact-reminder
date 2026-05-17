@@ -1,4 +1,3 @@
-import AsyncStorage from 'expo-sqlite/kv-store';
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -11,6 +10,7 @@ import {
   initialStoredEvents,
   relationshipPalette,
 } from '@/data/mock-app-data';
+import { appStorage } from '@/lib/app-storage';
 
 type AddContactInput = {
   name: string;
@@ -135,8 +135,8 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
     async function hydrate() {
       try {
         const [storedContacts, storedEvents] = await Promise.all([
-          AsyncStorage.getItemAsync(CONTACTS_STORAGE_KEY),
-          AsyncStorage.getItemAsync(EVENTS_STORAGE_KEY),
+          appStorage.getItemAsync(CONTACTS_STORAGE_KEY),
+          appStorage.getItemAsync(EVENTS_STORAGE_KEY),
         ]);
 
         if (cancelled) {
@@ -178,7 +178,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    void AsyncStorage.setItemAsync(CONTACTS_STORAGE_KEY, JSON.stringify(contacts)).catch(() => {
+    void appStorage.setItemAsync(CONTACTS_STORAGE_KEY, JSON.stringify(contacts)).catch(() => {
       setStorageError('Contacts could not be saved to local storage.');
     });
   }, [contacts, isHydrated]);
@@ -188,7 +188,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    void AsyncStorage.setItemAsync(EVENTS_STORAGE_KEY, JSON.stringify(events)).catch(() => {
+    void appStorage.setItemAsync(EVENTS_STORAGE_KEY, JSON.stringify(events)).catch(() => {
       setStorageError('Events could not be saved to local storage.');
     });
   }, [events, isHydrated]);
