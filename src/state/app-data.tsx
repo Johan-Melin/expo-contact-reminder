@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import AsyncStorage from 'expo-sqlite/kv-store';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
   StoredConnectionType,
@@ -27,11 +28,74 @@ type AddEventInput = {
 type AppDataContextValue = {
   contacts: StoredContact[];
   events: StoredEvent[];
+  isHydrated: boolean;
   addContact: (input: AddContactInput) => StoredContact;
   addEvent: (input: AddEventInput) => StoredEvent;
 };
 
 const AppDataContext = createContext<AppDataContextValue | null>(null);
+const CONTACTS_STORAGE_KEY = 'app.contacts.v1';
+const EVENTS_STORAGE_KEY = 'app.events.v1';
+
+function isStoredContact(value: unknown): value is StoredContact {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const record = value as Record<string, unknown>;
+  return (
+    typeof record.id === 'string' &&
+    typeof record.name === 'string' &&
+    typeof record.relationship === 'string' &&
+    typeof record.interval === 'string' &&
+    typeof record.accent === 'string' &&
+    typeof record.avatar === 'string' &&
+    typeof record.initials === 'string' &&
+    typeof record.tagBackground === 'string' &&
+    typeof record.tagColor === 'string'
+  );
+}
+
+function isStoredEvent(value: unknown): value is StoredEvent {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const record = value as Record<string, unknown>;
+  return (
+    typeof record.id === 'string' &&
+    typeof record.contactId === 'string' &&
+    typeof record.date === 'string' &&
+    typeof record.type === 'string' &&
+    typeof record.notes === 'string'
+  );
+}
+
+function parseStoredContacts(raw: string | null) {
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter(isStoredContact) : null;
+  } catch {
+    return null;
+  }
+}
+
+function parseStoredEvents(raw: string | null) {
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter(isStoredEvent) : null;
+  } catch {
+    return null;
+  }
+}
 
 function slugify(value: string) {
   return value
@@ -57,11 +121,63 @@ function getInitials(name: string) {
 export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [contacts, setContacts] = useState<StoredContact[]>(initialStoredContacts);
   const [events, setEvents] = useState<StoredEvent[]>(initialStoredEvents);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function hydrate() {
+      const [storedContacts, storedEvents] = await Promise.all([
+        AsyncStorage.getItemAsync(CONTACTS_STORAGE_KEY),
+        AsyncStorage.getItemAsync(EVENTS_STORAGE_KEY),
+      ]);
+
+      if (cancelled) {
+        return;
+      }
+
+      const parsedContacts = parseStoredContacts(storedContacts);
+      const parsedEvents = parseStoredEvents(storedEvents);
+
+      if (parsedContacts) {
+        setContacts(parsedContacts);
+      }
+
+      if (parsedEvents) {
+        setEvents(parsedEvents);
+      }
+
+      setIsHydrated(true);
+    }
+
+    void hydrate();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    void AsyncStorage.setItemAsync(CONTACTS_STORAGE_KEY, JSON.stringify(contacts));
+  }, [contacts, isHydrated]);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    void AsyncStorage.setItemAsync(EVENTS_STORAGE_KEY, JSON.stringify(events));
+  }, [events, isHydrated]);
 
   const value = useMemo<AppDataContextValue>(
     () => ({
       contacts,
       events,
+      isHydrated,
       addContact(input) {
         const palette = relationshipPalette[input.relationship];
         const name = input.name.trim();
@@ -103,7 +219,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
         return newEvent;
       },
     }),
-    [contacts, events]
+    [contacts, events, isHydrated]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
