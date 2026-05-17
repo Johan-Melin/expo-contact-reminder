@@ -94,10 +94,11 @@ export function ContactCard({
   actionBackground,
   tagBackground,
   tagColor,
+  onPress,
   onLongPress,
-}: Contact & { onLongPress?: () => void }) {
+}: Contact & { onPress?: () => void; onLongPress?: () => void }) {
   return (
-    <Pressable onLongPress={onLongPress} style={styles.contactCard}>
+    <Pressable onLongPress={onLongPress} onPress={onPress} style={styles.contactCard}>
       <AvatarRing
         accent={accent}
         color={avatar}
@@ -137,10 +138,11 @@ export function HistoryEntryCard({
   ring,
   icon,
   iconColor,
+  onPress,
   onLongPress,
-}: HistoryEntry & { onLongPress?: () => void }) {
+}: HistoryEntry & { onPress?: () => void; onLongPress?: () => void }) {
   return (
-    <Pressable onLongPress={onLongPress} style={styles.historyCard}>
+    <Pressable onLongPress={onLongPress} onPress={onPress} style={styles.historyCard}>
       <AvatarRing accent={ring} color={avatar} initials={initials} outerSize={66} innerSize={50} textSize={18} />
       <View style={styles.historyCopy}>
         <View style={styles.historyTopRow}>

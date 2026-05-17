@@ -1,7 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useRouter } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -27,13 +27,29 @@ const eventTypes = [
 
 export default function AddEventScreen() {
   const router = useRouter();
-  const { contacts, addEvent } = useAppData();
+  const params = useLocalSearchParams<{ eventId?: string }>();
+  const { contacts, addEvent, events, updateEvent } = useAppData();
+  const editingEvent = useMemo(
+    () => events.find((event) => event.id === params.eventId),
+    [events, params.eventId]
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedContactId, setSelectedContactId] = useState(contacts[0]?.id ?? '');
   const [eventDate, setEventDate] = useState('2026-05-17');
   const [eventType, setEventType] = useState<StoredConnectionType>('Phone Call');
   const [notes, setNotes] = useState('');
   const canSave = Boolean(selectedContactId) && Boolean(eventDate.trim());
+
+  useEffect(() => {
+    if (!editingEvent) {
+      return;
+    }
+
+    setSelectedContactId(editingEvent.contactId);
+    setEventDate(editingEvent.date);
+    setEventType(editingEvent.type);
+    setNotes(editingEvent.notes);
+  }, [editingEvent]);
 
   const visibleContacts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -47,7 +63,10 @@ export default function AddEventScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <ModalHeader onClose={() => router.back()} title="Record a Connection" />
+        <ModalHeader
+          onClose={() => router.back()}
+          title={editingEvent ? 'Edit a Connection' : 'Record a Connection'}
+        />
 
         <View style={styles.section}>
           <Text style={styles.label}>Who did you connect with?</Text>
@@ -146,17 +165,28 @@ export default function AddEventScreen() {
         <Pressable
           disabled={!canSave}
           onPress={() => {
-            addEvent({
-              contactId: selectedContactId,
-              date: eventDate,
-              type: eventType,
-              notes,
-            });
+            if (editingEvent) {
+              updateEvent(editingEvent.id, {
+                contactId: selectedContactId,
+                date: eventDate,
+                type: eventType,
+                notes,
+              });
+            } else {
+              addEvent({
+                contactId: selectedContactId,
+                date: eventDate,
+                type: eventType,
+                notes,
+              });
+            }
             router.back();
           }}
           style={[styles.logButton, !canSave && styles.logButtonDisabled]}>
           <MaterialCommunityIcons color="#ffffff" name="leaf" size={22} />
-          <Text style={styles.logButtonText}>Log Event</Text>
+          <Text style={styles.logButtonText}>
+            {editingEvent ? 'Save Changes' : 'Log Event'}
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>

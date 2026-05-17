@@ -95,6 +95,12 @@ export default function ContactsScreen() {
               <ContactCard
                 key={contact.id}
                 {...contact}
+                onPress={() =>
+                  router.push({
+                    pathname: '/add-contact',
+                    params: { contactId: contact.id },
+                  })
+                }
                 onLongPress={() =>
                   Alert.alert('Delete contact?', `${contact.name} and related events will be removed.`, [
                     { style: 'cancel', text: 'Cancel' },

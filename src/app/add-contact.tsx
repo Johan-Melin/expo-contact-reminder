@@ -1,6 +1,6 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -21,11 +21,26 @@ const relationshipOptions = ['Family', 'Friend', 'Colleague', 'Other'] as const;
 
 export default function AddContactScreen() {
   const router = useRouter();
-  const { addContact } = useAppData();
+  const params = useLocalSearchParams<{ contactId?: string }>();
+  const { addContact, contacts, updateContact } = useAppData();
+  const editingContact = useMemo(
+    () => contacts.find((contact) => contact.id === params.contactId),
+    [contacts, params.contactId]
+  );
   const [name, setName] = useState('');
   const [relationship, setRelationship] = useState<StoredRelationship>('Family');
   const [interval, setInterval] = useState<StoredInterval>('Weekly');
   const canSave = name.trim().length > 0;
+
+  useEffect(() => {
+    if (!editingContact) {
+      return;
+    }
+
+    setName(editingContact.name);
+    setRelationship(editingContact.relationship);
+    setInterval(editingContact.interval);
+  }, [editingContact]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -41,9 +56,13 @@ export default function AddContactScreen() {
         />
 
         <View style={styles.heroBlock}>
-          <Text style={styles.heroTitle}>Plant a Connection</Text>
+          <Text style={styles.heroTitle}>
+            {editingContact ? 'Edit a Connection' : 'Plant a Connection'}
+          </Text>
           <Text style={styles.heroBody}>
-            Adding a new contact helps you nurture your social garden with intentionality.
+            {editingContact
+              ? 'Update how you want to nurture this relationship.'
+              : 'Adding a new contact helps you nurture your social garden with intentionality.'}
           </Text>
         </View>
 
@@ -120,16 +139,26 @@ export default function AddContactScreen() {
           <Pressable
             disabled={!canSave}
             onPress={() => {
-              addContact({
-                name,
-                relationship,
-                interval,
-              });
+              if (editingContact) {
+                updateContact(editingContact.id, {
+                  name,
+                  relationship,
+                  interval,
+                });
+              } else {
+                addContact({
+                  name,
+                  relationship,
+                  interval,
+                });
+              }
               router.back();
             }}
             style={[styles.primaryButton, !canSave && styles.primaryButtonDisabled]}>
             <MaterialCommunityIcons color="#ffffff" name="leaf" size={22} />
-            <Text style={styles.primaryButtonText}>Save Contact</Text>
+            <Text style={styles.primaryButtonText}>
+              {editingContact ? 'Save Changes' : 'Save Contact'}
+            </Text>
           </Pressable>
           <Pressable onPress={() => router.back()} style={styles.cancelButton}>
             <Text style={styles.cancelButtonText}>Cancel</Text>

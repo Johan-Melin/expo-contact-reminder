@@ -32,6 +32,8 @@ type AppDataContextValue = {
   storageError: string | null;
   addContact: (input: AddContactInput) => StoredContact;
   addEvent: (input: AddEventInput) => StoredEvent;
+  updateContact: (contactId: string, input: AddContactInput) => void;
+  updateEvent: (eventId: string, input: AddEventInput) => void;
   removeContact: (contactId: string) => void;
   removeEvent: (eventId: string) => void;
 };
@@ -236,6 +238,33 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
 
         setEvents((current) => [newEvent, ...current]);
         return newEvent;
+      },
+      updateContact(contactId, input) {
+        const palette = relationshipPalette[input.relationship];
+        const name = input.name.trim();
+
+        setContacts((current) =>
+          current.map((contact) =>
+            contact.id === contactId
+              ? {
+                  ...contact,
+                  name,
+                  relationship: input.relationship,
+                  interval: input.interval,
+                  accent: palette.accent,
+                  avatar: palette.avatar,
+                  initials: getInitials(name),
+                  tagBackground: palette.tagBackground,
+                  tagColor: palette.tagColor,
+                }
+              : contact
+          )
+        );
+      },
+      updateEvent(eventId, input) {
+        setEvents((current) =>
+          current.map((event) => (event.id === eventId ? { ...event, ...input } : event))
+        );
       },
       removeContact(contactId) {
         setContacts((current) => current.filter((contact) => contact.id !== contactId));

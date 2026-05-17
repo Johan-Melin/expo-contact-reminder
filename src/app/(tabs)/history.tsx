@@ -33,8 +33,28 @@ export default function HistoryScreen() {
           </Pressable>
         </View>
 
-        <HistorySection onDeleteEvent={removeEvent} title="This Week" entries={history.thisWeek} />
-        <HistorySection onDeleteEvent={removeEvent} title="Last Week" entries={history.lastWeek} />
+        <HistorySection
+          onDeleteEvent={removeEvent}
+          onEditEvent={(eventId) =>
+            router.push({
+              pathname: '/add-event',
+              params: { eventId },
+            })
+          }
+          title="This Week"
+          entries={history.thisWeek}
+        />
+        <HistorySection
+          onDeleteEvent={removeEvent}
+          onEditEvent={(eventId) =>
+            router.push({
+              pathname: '/add-event',
+              params: { eventId },
+            })
+          }
+          title="Last Week"
+          entries={history.lastWeek}
+        />
 
         <View style={styles.streakCard}>
           <View style={styles.streakIcon}>
@@ -58,10 +78,12 @@ function HistorySection({
   title,
   entries,
   onDeleteEvent,
+  onEditEvent,
 }: {
   title: string;
   entries: import('@/data/mock-app-data').HistoryEntry[];
   onDeleteEvent: (eventId: string) => void;
+  onEditEvent: (eventId: string) => void;
 }) {
   return (
     <View style={styles.section}>
@@ -72,6 +94,7 @@ function HistorySection({
           <HistoryEntryCard
             key={entry.id}
             {...entry}
+            onPress={() => onEditEvent(entry.id)}
             onLongPress={() =>
               Alert.alert('Delete event?', `Remove this ${entry.mode.toLowerCase()} entry for ${entry.name}?`, [
                 { style: 'cancel', text: 'Cancel' },
