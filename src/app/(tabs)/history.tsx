@@ -3,64 +3,14 @@ import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AppHeader } from '@/components/app-header';
+import { AvatarRing, TimelineHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-
-type HistoryEntry = {
-  name: string;
-  age: string;
-  mode: string;
-  initials: string;
-  avatar: string;
-  ring: string;
-  icon: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
-  iconColor: string;
-};
-
-const thisWeek: HistoryEntry[] = [
-  {
-    name: 'John',
-    age: '3 days ago',
-    mode: 'Phone call',
-    initials: 'J',
-    avatar: '#806247',
-    ring: '#c7ded7',
-    icon: 'phone-in-talk-outline',
-    iconColor: '#005fad',
-  },
-  {
-    name: 'Sarah',
-    age: '4 days ago',
-    mode: 'Message',
-    initials: 'S',
-    avatar: '#e3a76d',
-    ring: '#a4c9ff',
-    icon: 'message-outline',
-    iconColor: '#0f5238',
-  },
-];
-
-const lastWeek: HistoryEntry[] = [
-  {
-    name: 'Michael',
-    age: '8 days ago',
-    mode: 'In person',
-    initials: 'M',
-    avatar: '#5f6261',
-    ring: '#c9c1ad',
-    icon: 'account-group-outline',
-    iconColor: '#434a38',
-  },
-  {
-    name: 'Elena',
-    age: '10 days ago',
-    mode: 'Video call',
-    initials: 'E',
-    avatar: '#7c4e3d',
-    ring: '#d6c4ba',
-    icon: 'video-outline',
-    iconColor: '#005fad',
-  },
-];
+import {
+  HistoryEntry,
+  historyLastWeek,
+  historySummary,
+  historyThisWeek,
+} from '@/data/mock-app-data';
 
 export default function HistoryScreen() {
   return (
@@ -70,8 +20,8 @@ export default function HistoryScreen() {
 
         <View style={styles.headerRow}>
           <View style={styles.headerCopy}>
-            <Text style={styles.eyebrow}>Growth Journal</Text>
-            <Text style={styles.title}>History</Text>
+            <Text style={styles.eyebrow}>{historySummary.eyebrow}</Text>
+            <Text style={styles.title}>{historySummary.title}</Text>
           </View>
           <Pressable style={styles.addButton}>
             <MaterialCommunityIcons color="#ffffff" name="plus" size={24} />
@@ -79,28 +29,21 @@ export default function HistoryScreen() {
           </Pressable>
         </View>
 
-        <HistorySection title="This Week" entries={thisWeek} />
-        <HistorySection title="Last Week" entries={lastWeek} />
+        <HistorySection title="This Week" entries={historyThisWeek} />
+        <HistorySection title="Last Week" entries={historyLastWeek} />
 
         <View style={styles.streakCard}>
           <View style={styles.streakIcon}>
             <MaterialCommunityIcons color="#6ba586" name="flower-outline" size={118} />
           </View>
-          <Text style={styles.streakLabel}>CONSISTENCY STREAK</Text>
-          <Text style={styles.streakValue}>12 Days</Text>
-          <Text style={styles.streakBody}>
-            You&apos;ve nurtured 5 relationships this week. Keep growing!
-          </Text>
+          <Text style={styles.streakLabel}>{historySummary.streakLabel}</Text>
+          <Text style={styles.streakValue}>{historySummary.streakValue}</Text>
+          <Text style={styles.streakBody}>{historySummary.streakBody}</Text>
         </View>
 
         <View style={styles.metricsRow}>
-          <MetricCard
-            color="#0f5238"
-            icon="chart-box-outline"
-            label="Top Contact"
-            value="John"
-          />
-          <MetricCard color="#005fad" icon="speedometer" label="Avg. Gap" value="4.2 Days" />
+          <MetricCard color="#0f5238" icon="chart-box-outline" label="Top Contact" value={historySummary.topContact} />
+          <MetricCard color="#005fad" icon="speedometer" label="Avg. Gap" value={historySummary.averageGap} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -110,11 +53,7 @@ export default function HistoryScreen() {
 function HistorySection({ title, entries }: { title: string; entries: HistoryEntry[] }) {
   return (
     <View style={styles.section}>
-      <View style={styles.timelineHeader}>
-        <View style={styles.timelineRule} />
-        <Text style={styles.timelineTitle}>{title}</Text>
-        <View style={styles.timelineRule} />
-      </View>
+      <TimelineHeader title={title} />
 
       <View style={styles.entryStack}>
         {entries.map((entry) => (
@@ -128,11 +67,7 @@ function HistorySection({ title, entries }: { title: string; entries: HistoryEnt
 function HistoryCard({ name, age, mode, initials, avatar, ring, icon, iconColor }: HistoryEntry) {
   return (
     <View style={styles.historyCard}>
-      <View style={[styles.historyRing, { borderColor: ring }]}>
-        <View style={[styles.historyAvatar, { backgroundColor: avatar }]}>
-          <Text style={styles.historyAvatarText}>{initials}</Text>
-        </View>
-      </View>
+      <AvatarRing accent={ring} color={avatar} initials={initials} outerSize={66} innerSize={50} textSize={18} />
 
       <View style={styles.historyCopy}>
         <View style={styles.historyTopRow}>
@@ -219,23 +154,6 @@ const styles = StyleSheet.create({
   section: {
     gap: 18,
   },
-  timelineHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
-  timelineRule: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#b8c1bc',
-  },
-  timelineTitle: {
-    color: '#707973',
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 1.6,
-    textTransform: 'uppercase',
-  },
   entryStack: {
     gap: 16,
   },
@@ -251,27 +169,6 @@ const styles = StyleSheet.create({
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 8 },
     elevation: 3,
-  },
-  historyRing: {
-    width: 66,
-    height: 66,
-    borderRadius: 33,
-    borderWidth: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
-  historyAvatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  historyAvatarText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: '700',
   },
   historyCopy: {
     flex: 1,

@@ -5,69 +5,9 @@ import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AppHeader } from '@/components/app-header';
+import { AvatarRing } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-
-type Contact = {
-  name: string;
-  cadence: string;
-  urgency: string;
-  tag: string;
-  accent: string;
-  avatar: string;
-  initials: string;
-  actionIcon: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
-  actionColor: string;
-  actionBackground: string;
-  tagBackground: string;
-  tagColor: string;
-};
-
-const filters = ['All', 'Family', 'Friends', 'Colleague'];
-
-const contacts: Contact[] = [
-  {
-    name: 'Marcus Chen',
-    cadence: 'Weekly',
-    urgency: '2 days left',
-    tag: 'Family',
-    accent: '#0f5238',
-    avatar: '#866443',
-    initials: 'MC',
-    actionIcon: 'phone-outline',
-    actionColor: '#0f5238',
-    actionBackground: '#dff4eb',
-    tagBackground: '#dbe8ff',
-    tagColor: '#003869',
-  },
-  {
-    name: 'Elena Rodriguez',
-    cadence: 'Bi-weekly',
-    urgency: 'Overdue',
-    tag: 'Friend',
-    accent: '#d5d8f9',
-    avatar: '#78d2c7',
-    initials: 'ER',
-    actionIcon: 'bell-ring-outline',
-    actionColor: '#ba1a1a',
-    actionBackground: '#feecec',
-    tagBackground: '#e5e6ff',
-    tagColor: '#404943',
-  },
-  {
-    name: 'David Park',
-    cadence: 'Monthly',
-    urgency: '12 days left',
-    tag: 'Colleague',
-    accent: '#0f5238',
-    avatar: '#325e48',
-    initials: 'DP',
-    actionIcon: 'message-processing-outline',
-    actionColor: '#0f5238',
-    actionBackground: '#dff4eb',
-    tagBackground: '#dee6cc',
-    tagColor: '#424937',
-  },
-];
+import { Contact, contactFilters, contacts } from '@/data/mock-app-data';
 
 export default function ContactsScreen() {
   return (
@@ -81,7 +21,7 @@ export default function ContactsScreen() {
         </View>
 
         <View style={styles.filterRow}>
-          {filters.map((filter, index) => {
+          {contactFilters.map((filter, index) => {
             const isActive = index === 0;
             return (
               <Pressable
@@ -144,11 +84,7 @@ function ContactCard({
 }: Contact) {
   return (
     <View style={styles.contactCard}>
-      <View style={[styles.contactRing, { borderColor: accent }]}>
-        <View style={[styles.contactAvatar, { backgroundColor: avatar }]}>
-          <Text style={styles.contactAvatarText}>{initials}</Text>
-        </View>
-      </View>
+      <AvatarRing accent={accent} color={avatar} initials={initials} outerSize={74} innerSize={56} textSize={18} />
 
       <View style={styles.contactCopy}>
         <View style={styles.nameRow}>
@@ -259,27 +195,6 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 10 },
     elevation: 3,
-  },
-  contactRing: {
-    width: 74,
-    height: 74,
-    borderRadius: 37,
-    borderWidth: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
-  contactAvatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  contactAvatarText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: '700',
   },
   contactCopy: {
     flex: 1,

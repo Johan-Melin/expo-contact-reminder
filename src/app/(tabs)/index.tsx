@@ -4,72 +4,17 @@ import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AppHeader } from '@/components/app-header';
+import { AvatarRing, SectionHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing } from '@/constants/app-design';
-
-type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
-
-type OverdueReminder = {
-  name: string;
-  detail: string;
-  accent: string;
-  avatar: string;
-  initials: string;
-  actionLabel: string;
-};
-
-type UpcomingReminder = {
-  name: string;
-  detail: string;
-  icon: MaterialIconName;
-  accent: string;
-  avatar: string;
-  initials: string;
-  actionIcon: MaterialIconName;
-};
-
-type OnTrackContact = {
-  name: string;
-  status: string;
-  avatar: string;
-  initials: string;
-};
-
-const overdueReminders: OverdueReminder[] = [
-  {
-    name: 'Sarah Jenkins',
-    detail: '3 days overdue',
-    accent: '#ba1a1a',
-    avatar: '#d63031',
-    initials: 'SJ',
-    actionLabel: 'Reach out',
-  },
-];
-
-const upcomingReminders: UpcomingReminder[] = [
-  {
-    name: 'Marcus Chen',
-    detail: 'Tomorrow, 2:00 PM',
-    icon: 'clock-outline',
-    accent: '#005fad',
-    avatar: '#1d6fd8',
-    initials: 'MC',
-    actionIcon: 'message-processing-outline',
-  },
-  {
-    name: 'Elena Rodriguez',
-    detail: '48 hours left',
-    icon: 'calendar-blank-outline',
-    accent: '#58a3fe',
-    avatar: '#89b9ff',
-    initials: 'ER',
-    actionIcon: 'phone-outline',
-  },
-];
-
-const onTrackContacts: OnTrackContact[] = [
-  { name: 'David Kim', status: 'Growing', avatar: '#95d4b3', initials: 'DK' },
-  { name: 'Sophie Ward', status: 'Stable', avatar: '#f2c9b8', initials: 'SW' },
-];
+import {
+  OnTrackContact,
+  OverdueReminder,
+  UpcomingReminder,
+  onTrackContacts,
+  overdueReminders,
+  reminderSummary,
+  upcomingReminders,
+} from '@/data/mock-app-data';
 
 export default function RemindersScreen() {
   return (
@@ -79,8 +24,8 @@ export default function RemindersScreen() {
 
         <View style={styles.heroCard}>
           <View style={styles.heroCopy}>
-            <Text style={styles.heroTitle}>Relationship Garden</Text>
-            <Text style={styles.heroBody}>3 friends need a little sunshine today.</Text>
+            <Text style={styles.heroTitle}>{reminderSummary.title}</Text>
+            <Text style={styles.heroBody}>{reminderSummary.body}</Text>
           </View>
           <MaterialCommunityIcons color="#4a8a6c" name="flower-outline" size={112} />
         </View>
@@ -108,33 +53,6 @@ export default function RemindersScreen() {
         <AntDesign color="#ffffff" name="plus" size={14} style={styles.fabPlus} />
       </Pressable>
     </SafeAreaView>
-  );
-}
-
-function SectionHeader({ color, title }: { color: string; title: string }) {
-  return (
-    <View style={styles.sectionHeader}>
-      <View style={[styles.sectionDot, { backgroundColor: color }]} />
-      <Text style={styles.sectionTitle}>{title}</Text>
-    </View>
-  );
-}
-
-function AvatarRing({
-  accent,
-  initials,
-  color,
-}: {
-  accent: string;
-  initials: string;
-  color: string;
-}) {
-  return (
-    <View style={[styles.avatarRing, { borderColor: accent }]}>
-      <View style={[styles.avatarInner, { backgroundColor: color }]}>
-        <Text style={styles.avatarText}>{initials}</Text>
-      </View>
-    </View>
   );
 }
 
@@ -196,11 +114,14 @@ function TrackCard({
 }: OnTrackContact) {
   return (
     <View style={styles.trackCard}>
-      <View style={styles.trackAvatarRing}>
-        <View style={[styles.trackAvatarInner, { backgroundColor: avatar }]}>
-          <Text style={styles.avatarText}>{initials}</Text>
-        </View>
-      </View>
+      <AvatarRing
+        accent="#b1f0ce"
+        color={avatar}
+        initials={initials}
+        outerSize={72}
+        innerSize={54}
+        textSize={16}
+      />
       <Text style={styles.trackName}>{name}</Text>
       <Text style={styles.trackStatus}>{status.toUpperCase()}</Text>
     </View>
@@ -246,22 +167,6 @@ const styles = StyleSheet.create({
     color: '#bfe8d0',
     fontSize: 18,
     lineHeight: 26,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    marginBottom: -12,
-  },
-  sectionDot: {
-    width: 14,
-    height: 14,
-    borderRadius: 999,
-  },
-  sectionTitle: {
-    color: '#161a32',
-    fontSize: 24,
-    fontWeight: '700',
   },
   overdueCard: {
     backgroundColor: '#ffffff',
@@ -317,27 +222,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 22,
   },
-  avatarRing: {
-    width: 62,
-    height: 62,
-    borderRadius: 31,
-    borderWidth: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
-  avatarInner: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '700',
-  },
   primaryAction: {
     backgroundColor: '#0f5238',
     paddingHorizontal: 22,
@@ -377,23 +261,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     minHeight: 172,
-  },
-  trackAvatarRing: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    borderWidth: 4,
-    borderColor: '#b1f0ce',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
-  trackAvatarInner: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   trackName: {
     color: '#161a32',
