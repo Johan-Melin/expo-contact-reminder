@@ -1,7 +1,9 @@
-import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import { AppHeader } from '@/components/app-header';
+import { AppColors, AppSpacing } from '@/constants/app-design';
 
 type HistoryEntry = {
   name: string;
@@ -64,17 +66,7 @@ export default function HistoryScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.topBar}>
-          <View style={styles.brandGroup}>
-            <View style={styles.brandAvatar}>
-              <Text style={styles.brandAvatarText}>JM</Text>
-            </View>
-            <Text style={styles.brandTitle}>Garden</Text>
-          </View>
-          <Pressable style={styles.iconButton}>
-            <Feather color="#0f5238" name="settings" size={24} />
-          </Pressable>
-        </View>
+        <AppHeader />
 
         <View style={styles.headerRow}>
           <View style={styles.headerCopy}>
@@ -82,7 +74,7 @@ export default function HistoryScreen() {
             <Text style={styles.title}>History</Text>
           </View>
           <Pressable style={styles.addButton}>
-            <Feather color="#ffffff" name="plus" size={24} />
+            <MaterialCommunityIcons color="#ffffff" name="plus" size={24} />
             <Text style={styles.addButtonText}>Add</Text>
           </Pressable>
         </View>
@@ -179,51 +171,13 @@ function MetricCard({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f0f4f2',
+    backgroundColor: AppColors.historyBackground,
   },
   scrollContent: {
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 132,
+    paddingHorizontal: AppSpacing.screenHorizontal,
+    paddingTop: AppSpacing.screenTop,
+    paddingBottom: AppSpacing.screenBottom,
     gap: 24,
-  },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  brandGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-  },
-  brandAvatar: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: '#b1f0ce',
-    borderWidth: 3,
-    borderColor: '#d9f7e7',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  brandAvatarText: {
-    color: '#0f5238',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  brandTitle: {
-    color: '#0f5238',
-    fontSize: 28,
-    fontWeight: '700',
-  },
-  iconButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   headerRow: {
     flexDirection: 'row',

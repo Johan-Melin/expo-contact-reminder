@@ -3,26 +3,36 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-const COLORS = {
-  active: '#0f5238',
-  inactive: '#707973',
-  background: '#ffffff',
-  border: '#dfe4dc',
-};
+import { AppColors, AppSpacing } from '@/constants/app-design';
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS.active,
-        tabBarInactiveTintColor: COLORS.inactive,
+        tabBarActiveTintColor: AppColors.brand,
+        tabBarInactiveTintColor: '#94a3b8',
+        tabBarActiveBackgroundColor: AppColors.activeTabBackground,
         tabBarStyle: {
-          backgroundColor: COLORS.background,
-          borderTopColor: COLORS.border,
-          height: 86,
-          paddingTop: 8,
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          borderTopColor: 'rgba(15,82,56,0.06)',
+          height: AppSpacing.tabBarHeight,
+          paddingTop: 10,
           paddingBottom: 24,
+          paddingHorizontal: 18,
+          borderTopLeftRadius: 26,
+          borderTopRightRadius: 26,
+          position: 'absolute',
+          shadowColor: AppColors.brand,
+          shadowOpacity: 0.08,
+          shadowRadius: 16,
+          shadowOffset: { width: 0, height: -4 },
+          elevation: 10,
+        },
+        tabBarItemStyle: {
+          marginHorizontal: 8,
+          marginVertical: 6,
+          borderRadius: 18,
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -34,7 +44,7 @@ export default function TabsLayout() {
         options={{
           title: 'Reminders',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons color={color} name="sprout-outline" size={size} />
+            <MaterialCommunityIcons color={color} name="bell-outline" size={size} />
           ),
         }}
       />
