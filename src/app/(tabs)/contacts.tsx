@@ -14,7 +14,7 @@ import { useAppData } from '@/state/app-data';
 
 export default function ContactsScreen() {
   const router = useRouter();
-  const { contacts, events, isHydrated, removeContact, storageError } = useAppData();
+  const { contacts, events, feedbackMessage, isHydrated, removeContact, storageError } = useAppData();
   const [activeFilter, setActiveFilter] = useState<ContactFilter>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const deferredQuery = useDeferredValue(searchQuery);
@@ -49,7 +49,7 @@ export default function ContactsScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <AppHeader />
-        <AppStateBanner isHydrated={isHydrated} storageError={storageError} />
+        <AppStateBanner feedbackMessage={feedbackMessage} isHydrated={isHydrated} storageError={storageError} />
 
         <View style={styles.searchBox}>
           <Feather color="#707973" name="search" size={28} />

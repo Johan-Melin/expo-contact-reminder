@@ -13,14 +13,14 @@ import { useAppData } from '@/state/app-data';
 
 export default function HistoryScreen() {
   const router = useRouter();
-  const { contacts, events, isHydrated, removeEvent, storageError } = useAppData();
+  const { contacts, events, feedbackMessage, isHydrated, removeEvent, storageError } = useAppData();
   const history = buildHistoryEntries(contacts, events);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <AppHeader />
-        <AppStateBanner isHydrated={isHydrated} storageError={storageError} />
+        <AppStateBanner feedbackMessage={feedbackMessage} isHydrated={isHydrated} storageError={storageError} />
 
         <View style={styles.headerRow}>
           <View style={styles.headerCopy}>

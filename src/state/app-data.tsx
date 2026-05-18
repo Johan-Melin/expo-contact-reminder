@@ -30,6 +30,7 @@ type AppDataContextValue = {
   events: StoredEvent[];
   isHydrated: boolean;
   storageError: string | null;
+  feedbackMessage: string | null;
   addContact: (input: AddContactInput) => StoredContact;
   addEvent: (input: AddEventInput) => StoredEvent;
   updateContact: (contactId: string, input: AddContactInput) => void;
@@ -128,6 +129,8 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [events, setEvents] = useState<StoredEvent[]>(initialStoredEvents);
   const [isHydrated, setIsHydrated] = useState(false);
   const [storageError, setStorageError] = useState<string | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [feedbackTick, setFeedbackTick] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -193,12 +196,27 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
     });
   }, [events, isHydrated]);
 
+  useEffect(() => {
+    if (!feedbackMessage) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setFeedbackMessage(null);
+    }, 2800);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [feedbackMessage, feedbackTick]);
+
   const value = useMemo<AppDataContextValue>(
     () => ({
       contacts,
       events,
       isHydrated,
       storageError,
+      feedbackMessage,
       addContact(input) {
         const palette = relationshipPalette[input.relationship];
         const name = input.name.trim();
@@ -227,6 +245,8 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
 
           return [newContact, ...current];
         });
+        setFeedbackMessage('Contact saved.');
+        setFeedbackTick((current) => current + 1);
 
         return newContact;
       },
@@ -237,6 +257,8 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
         };
 
         setEvents((current) => [newEvent, ...current]);
+        setFeedbackMessage('Connection logged.');
+        setFeedbackTick((current) => current + 1);
         return newEvent;
       },
       updateContact(contactId, input) {
@@ -260,21 +282,29 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
               : contact
           )
         );
+        setFeedbackMessage('Contact updated.');
+        setFeedbackTick((current) => current + 1);
       },
       updateEvent(eventId, input) {
         setEvents((current) =>
           current.map((event) => (event.id === eventId ? { ...event, ...input } : event))
         );
+        setFeedbackMessage('Connection updated.');
+        setFeedbackTick((current) => current + 1);
       },
       removeContact(contactId) {
         setContacts((current) => current.filter((contact) => contact.id !== contactId));
         setEvents((current) => current.filter((event) => event.contactId !== contactId));
+        setFeedbackMessage('Contact deleted.');
+        setFeedbackTick((current) => current + 1);
       },
       removeEvent(eventId) {
         setEvents((current) => current.filter((event) => event.id !== eventId));
+        setFeedbackMessage('Event deleted.');
+        setFeedbackTick((current) => current + 1);
       },
     }),
-    [contacts, events, isHydrated, storageError]
+    [contacts, events, feedbackMessage, isHydrated, storageError]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;

@@ -18,7 +18,7 @@ import { useAppData } from '@/state/app-data';
 
 export default function RemindersScreen() {
   const router = useRouter();
-  const { contacts, events, isHydrated, storageError } = useAppData();
+  const { contacts, events, feedbackMessage, isHydrated, storageError } = useAppData();
   const reminderData = buildReminders(contacts, events);
   const reminderSummary = buildReminderSummary(contacts, events);
 
@@ -26,7 +26,7 @@ export default function RemindersScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <AppHeader />
-        <AppStateBanner isHydrated={isHydrated} storageError={storageError} />
+        <AppStateBanner feedbackMessage={feedbackMessage} isHydrated={isHydrated} storageError={storageError} />
 
         <View style={styles.heroCard}>
           <View style={styles.heroCopy}>

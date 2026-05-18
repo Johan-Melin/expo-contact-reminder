@@ -4,9 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 export function AppStateBanner({
   isHydrated,
   storageError,
+  feedbackMessage,
 }: {
   isHydrated: boolean;
   storageError: string | null;
+  feedbackMessage?: string | null;
 }) {
   if (storageError) {
     return (
@@ -20,6 +22,14 @@ export function AppStateBanner({
     return (
       <View style={[styles.banner, styles.infoBanner]}>
         <Text style={styles.infoText}>Loading saved contacts and events…</Text>
+      </View>
+    );
+  }
+
+  if (feedbackMessage) {
+    return (
+      <View style={[styles.banner, styles.successBanner]}>
+        <Text style={styles.successText}>{feedbackMessage}</Text>
       </View>
     );
   }
@@ -39,6 +49,9 @@ const styles = StyleSheet.create({
   errorBanner: {
     backgroundColor: '#feecec',
   },
+  successBanner: {
+    backgroundColor: '#dff6e8',
+  },
   infoText: {
     color: '#0f5238',
     fontSize: 14,
@@ -48,5 +61,10 @@ const styles = StyleSheet.create({
     color: '#93000a',
     fontSize: 14,
     fontWeight: '600',
+  },
+  successText: {
+    color: '#0f5238',
+    fontSize: 14,
+    fontWeight: '700',
   },
 });
