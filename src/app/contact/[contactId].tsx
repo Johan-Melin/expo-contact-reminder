@@ -159,7 +159,7 @@ export default function ContactDetailScreen() {
                 text: 'Delete',
                 onPress: () => {
                   removeContact(contactDetail.id);
-                  router.replace('/contacts');
+                  router.dismissTo('/contacts');
                 },
               },
             ])

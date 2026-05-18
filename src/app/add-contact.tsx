@@ -182,7 +182,7 @@ export default function AddContactScreen() {
                     text: 'Delete',
                     onPress: () => {
                       removeContact(editingContact.id);
-                      router.replace('/contacts');
+                      router.dismissTo('/contacts');
                     },
                   },
                 ])
