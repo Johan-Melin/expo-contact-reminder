@@ -8,6 +8,7 @@ import { AppHeader } from '@/components/app-header';
 import { AppStateBanner } from '@/components/app-state-banner';
 import { TimelineHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
+import { confirmAction } from '@/lib/confirm-action';
 import { buildHistoryEntries } from '@/lib/app-selectors';
 import { useAppData } from '@/state/app-data';
 
@@ -96,14 +97,12 @@ function HistorySection({
             {...entry}
             onPress={() => onEditEvent(entry.id)}
             onLongPress={() =>
-              Alert.alert('Delete event?', `Remove this ${entry.mode.toLowerCase()} entry for ${entry.name}?`, [
-                { style: 'cancel', text: 'Cancel' },
-                {
-                  style: 'destructive',
-                  text: 'Delete',
-                  onPress: () => onDeleteEvent(entry.id),
-                },
-              ])
+              confirmAction({
+                title: 'Delete event?',
+                message: `Remove this ${entry.mode.toLowerCase()} entry for ${entry.name}?`,
+                confirmLabel: 'Delete',
+                onConfirm: () => onDeleteEvent(entry.id),
+              })
             }
           />
         ))}

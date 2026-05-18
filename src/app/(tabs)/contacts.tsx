@@ -9,6 +9,7 @@ import { AppHeader } from '@/components/app-header';
 import { AppStateBanner } from '@/components/app-state-banner';
 import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { ContactFilter, contactFilters } from '@/data/mock-app-data';
+import { confirmAction } from '@/lib/confirm-action';
 import { buildContactCards } from '@/lib/app-selectors';
 import { useAppData } from '@/state/app-data';
 
@@ -102,14 +103,12 @@ export default function ContactsScreen() {
                   })
                 }
                 onLongPress={() =>
-                  Alert.alert('Delete contact?', `${contact.name} and related events will be removed.`, [
-                    { style: 'cancel', text: 'Cancel' },
-                    {
-                      style: 'destructive',
-                      text: 'Delete',
-                      onPress: () => removeContact(contact.id),
-                    },
-                  ])
+                  confirmAction({
+                    title: 'Delete contact?',
+                    message: `${contact.name} and related events will be removed.`,
+                    confirmLabel: 'Delete',
+                    onConfirm: () => removeContact(contact.id),
+                  })
                 }
               />
             ))}

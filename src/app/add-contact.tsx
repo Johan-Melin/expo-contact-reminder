@@ -14,6 +14,7 @@ import {
 
 import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { StoredInterval, StoredRelationship } from '@/data/mock-app-data';
+import { confirmAction } from '@/lib/confirm-action';
 import { ModalHeader } from '@/components/modal-header';
 import { useAppData } from '@/state/app-data';
 
@@ -175,17 +176,15 @@ export default function AddContactScreen() {
           {editingContact ? (
             <Pressable
               onPress={() =>
-                Alert.alert('Delete contact?', `${editingContact.name} and related events will be removed.`, [
-                  { style: 'cancel', text: 'Cancel' },
-                  {
-                    style: 'destructive',
-                    text: 'Delete',
-                    onPress: () => {
-                      removeContact(editingContact.id);
-                      router.dismissTo('/contacts');
-                    },
+                confirmAction({
+                  title: 'Delete contact?',
+                  message: `${editingContact.name} and related events will be removed.`,
+                  confirmLabel: 'Delete',
+                  onConfirm: () => {
+                    removeContact(editingContact.id);
+                    router.dismissTo('/contacts');
                   },
-                ])
+                })
               }
               style={styles.deleteButton}>
               <MaterialCommunityIcons color="#ba1a1a" name="trash-can-outline" size={20} />

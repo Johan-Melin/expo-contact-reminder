@@ -8,6 +8,7 @@ import { AppStateBanner } from '@/components/app-state-banner';
 import { AvatarRing, TimelineHeader } from '@/components/app-primitives';
 import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { buildContactDetail } from '@/lib/app-selectors';
+import { confirmAction } from '@/lib/confirm-action';
 import { useAppData } from '@/state/app-data';
 
 export default function ContactDetailScreen() {
@@ -152,17 +153,15 @@ export default function ContactDetailScreen() {
 
         <Pressable
           onPress={() =>
-            Alert.alert('Delete contact?', `${contactDetail.name} and related events will be removed.`, [
-              { style: 'cancel', text: 'Cancel' },
-              {
-                style: 'destructive',
-                text: 'Delete',
-                onPress: () => {
-                  removeContact(contactDetail.id);
-                  router.dismissTo('/contacts');
-                },
+            confirmAction({
+              title: 'Delete contact?',
+              message: `${contactDetail.name} and related events will be removed.`,
+              confirmLabel: 'Delete',
+              onConfirm: () => {
+                removeContact(contactDetail.id);
+                router.dismissTo('/contacts');
               },
-            ])
+            })
           }
           style={styles.deleteButton}>
           <Feather color="#ba1a1a" name="trash-2" size={18} />
