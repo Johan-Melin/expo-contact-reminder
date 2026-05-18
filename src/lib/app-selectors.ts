@@ -152,6 +152,7 @@ export function buildReminders(
     .filter((item) => item.dueInDays < 0)
     .slice(0, 3)
     .map(({ contact, dueInDays }) => ({
+      id: contact.id,
       name: contact.name,
       detail: `${pluralizeDay(Math.abs(dueInDays))} overdue`,
       accent: '#ba1a1a',
@@ -164,6 +165,7 @@ export function buildReminders(
     .filter((item) => item.dueInDays >= 0 && item.dueInDays <= 2)
     .slice(0, 3)
     .map(({ contact, latest, dueInDays }) => ({
+      id: contact.id,
       name: contact.name,
       detail: dueInDays === 0 ? 'Today' : `${pluralizeDay(dueInDays)} left`,
       icon: reminderDueIcon(dueInDays),
@@ -177,6 +179,7 @@ export function buildReminders(
     .filter((item) => item.dueInDays > 2)
     .slice(0, 4)
     .map(({ contact, dueInDays }) => ({
+      id: contact.id,
       name: contact.name,
       status: dueInDays <= 7 ? 'Growing' : 'Stable',
       avatar: contact.avatar,

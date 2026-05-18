@@ -38,18 +38,57 @@ export default function RemindersScreen() {
 
         <SectionHeader color="#ba1a1a" title="Overdue" />
         {reminderData.overdue.map((reminder) => (
-          <OverdueReminderCard key={reminder.name} {...reminder} />
+          <OverdueReminderCard
+            key={reminder.id}
+            {...reminder}
+            onActionPress={() =>
+              router.push({
+                pathname: '/add-event',
+                params: { contactId: reminder.id },
+              })
+            }
+            onPress={() =>
+              router.push({
+                pathname: '/contact/[contactId]',
+                params: { contactId: reminder.id },
+              })
+            }
+          />
         ))}
 
         <SectionHeader color="#58a3fe" title="Upcoming" />
         {reminderData.upcoming.map((reminder) => (
-          <UpcomingReminderCard key={reminder.name} {...reminder} />
+          <UpcomingReminderCard
+            key={reminder.id}
+            {...reminder}
+            onActionPress={() =>
+              router.push({
+                pathname: '/add-event',
+                params: { contactId: reminder.id },
+              })
+            }
+            onPress={() =>
+              router.push({
+                pathname: '/contact/[contactId]',
+                params: { contactId: reminder.id },
+              })
+            }
+          />
         ))}
 
         <SectionHeader color="#95d4b3" title="On Track" />
         <View style={styles.trackGrid}>
           {reminderData.onTrack.map((contact) => (
-            <OnTrackContactCard key={contact.name} {...contact} />
+            <OnTrackContactCard
+              key={contact.id}
+              {...contact}
+              onPress={() =>
+                router.push({
+                  pathname: '/contact/[contactId]',
+                  params: { contactId: contact.id },
+                })
+              }
+            />
           ))}
         </View>
       </ScrollView>

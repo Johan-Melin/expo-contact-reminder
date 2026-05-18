@@ -3,6 +3,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 export type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 export type OverdueReminder = {
+  id: string;
   name: string;
   detail: string;
   accent: string;
@@ -12,6 +13,7 @@ export type OverdueReminder = {
 };
 
 export type UpcomingReminder = {
+  id: string;
   name: string;
   detail: string;
   icon: MaterialIconName;
@@ -22,6 +24,7 @@ export type UpcomingReminder = {
 };
 
 export type OnTrackContact = {
+  id: string;
   name: string;
   status: string;
   avatar: string;

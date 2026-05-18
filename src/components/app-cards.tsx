@@ -14,14 +14,17 @@ import {
 } from '@/data/mock-app-data';
 
 export function OverdueReminderCard({
+  id: _id,
   name,
   detail,
   initials,
   avatar,
   actionLabel,
-}: OverdueReminder) {
+  onPress,
+  onActionPress,
+}: OverdueReminder & { onActionPress?: () => void; onPress?: () => void }) {
   return (
-    <View style={styles.overdueCard}>
+    <Pressable onPress={onPress} style={styles.overdueCard}>
       <AvatarRing accent="#cf1f25" color={avatar} initials={initials} />
       <View style={styles.cardCopy}>
         <Text style={styles.cardTitle}>{name}</Text>
@@ -30,14 +33,15 @@ export function OverdueReminderCard({
           <Text style={styles.overdueText}>{detail}</Text>
         </View>
       </View>
-      <Pressable style={styles.primaryAction}>
+      <Pressable onPress={onActionPress} style={styles.primaryAction}>
         <Text style={styles.primaryActionText}>{actionLabel}</Text>
       </Pressable>
-    </View>
+    </Pressable>
   );
 }
 
 export function UpcomingReminderCard({
+  id: _id,
   name,
   detail,
   icon,
@@ -45,9 +49,11 @@ export function UpcomingReminderCard({
   initials,
   avatar,
   actionIcon,
-}: UpcomingReminder) {
+  onActionPress,
+  onPress,
+}: UpcomingReminder & { onActionPress?: () => void; onPress?: () => void }) {
   return (
-    <View style={styles.upcomingCard}>
+    <Pressable onPress={onPress} style={styles.upcomingCard}>
       <AvatarRing accent={accent} color={avatar} initials={initials} />
       <View style={styles.cardCopy}>
         <Text style={styles.cardTitle}>{name}</Text>
@@ -56,16 +62,23 @@ export function UpcomingReminderCard({
           <Text style={[styles.upcomingText, { color: accent }]}>{detail}</Text>
         </View>
       </View>
-      <Pressable style={styles.secondaryIconAction}>
+      <Pressable onPress={onActionPress} style={styles.secondaryIconAction}>
         <MaterialCommunityIcons color="#00509b" name={actionIcon} size={24} />
       </Pressable>
-    </View>
+    </Pressable>
   );
 }
 
-export function OnTrackContactCard({ name, status, initials, avatar }: OnTrackContact) {
+export function OnTrackContactCard({
+  id: _id,
+  name,
+  status,
+  initials,
+  avatar,
+  onPress,
+}: OnTrackContact & { onPress?: () => void }) {
   return (
-    <View style={styles.trackCard}>
+    <Pressable onPress={onPress} style={styles.trackCard}>
       <AvatarRing
         accent="#b1f0ce"
         color={avatar}
@@ -76,7 +89,7 @@ export function OnTrackContactCard({ name, status, initials, avatar }: OnTrackCo
       />
       <Text style={styles.trackName}>{name}</Text>
       <Text style={styles.trackStatus}>{status.toUpperCase()}</Text>
-    </View>
+    </Pressable>
   );
 }
 
