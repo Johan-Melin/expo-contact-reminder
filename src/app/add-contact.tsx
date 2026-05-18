@@ -2,6 +2,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  Alert,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -22,7 +23,7 @@ const relationshipOptions = ['Family', 'Friend', 'Colleague', 'Other'] as const;
 export default function AddContactScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ contactId?: string }>();
-  const { addContact, contacts, updateContact } = useAppData();
+  const { addContact, contacts, removeContact, updateContact } = useAppData();
   const editingContact = useMemo(
     () => contacts.find((contact) => contact.id === params.contactId),
     [contacts, params.contactId]
@@ -171,6 +172,26 @@ export default function AddContactScreen() {
               {editingContact ? 'Save Changes' : 'Save Contact'}
             </Text>
           </Pressable>
+          {editingContact ? (
+            <Pressable
+              onPress={() =>
+                Alert.alert('Delete contact?', `${editingContact.name} and related events will be removed.`, [
+                  { style: 'cancel', text: 'Cancel' },
+                  {
+                    style: 'destructive',
+                    text: 'Delete',
+                    onPress: () => {
+                      removeContact(editingContact.id);
+                      router.replace('/contacts');
+                    },
+                  },
+                ])
+              }
+              style={styles.deleteButton}>
+              <MaterialCommunityIcons color="#ba1a1a" name="trash-can-outline" size={20} />
+              <Text style={styles.deleteButtonText}>Delete Contact</Text>
+            </Pressable>
+          ) : null}
           <Pressable onPress={() => router.back()} style={styles.cancelButton}>
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </Pressable>
@@ -357,6 +378,20 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 20,
     fontWeight: '600',
+  },
+  deleteButton: {
+    minHeight: 56,
+    borderRadius: 20,
+    backgroundColor: '#feecec',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+  },
+  deleteButtonText: {
+    color: '#ba1a1a',
+    fontSize: 18,
+    fontWeight: '700',
   },
   cancelButton: {
     alignItems: 'center',
