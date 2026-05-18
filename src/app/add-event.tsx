@@ -25,6 +25,15 @@ const eventTypes = [
   { label: 'Video Call', icon: 'video-outline' },
 ] as const;
 
+function isIsoDate(value: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
 export default function AddEventScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ eventId?: string }>();
@@ -38,10 +47,26 @@ export default function AddEventScreen() {
   const [eventDate, setEventDate] = useState('2026-05-17');
   const [eventType, setEventType] = useState<StoredConnectionType>('Phone Call');
   const [notes, setNotes] = useState('');
-  const canSave = Boolean(selectedContactId) && Boolean(eventDate.trim());
+  const trimmedDate = eventDate.trim();
+  const dateError = trimmedDate.length === 0
+    ? 'Enter the date of this connection.'
+    : !isIsoDate(trimmedDate)
+      ? 'Use a valid date in YYYY-MM-DD format.'
+      : null;
+  const contactError = !contacts.length ? 'Add a contact before logging a connection.' : null;
+  const canSave = Boolean(selectedContactId) && !dateError && !contactError;
 
   useEffect(() => {
+    if (params.eventId && !editingEvent) {
+      router.replace('/history');
+      return;
+    }
+
     if (!editingEvent) {
+      setSelectedContactId(contacts[0]?.id ?? '');
+      setEventDate('2026-05-18');
+      setEventType('Phone Call');
+      setNotes('');
       return;
     }
 
@@ -49,7 +74,7 @@ export default function AddEventScreen() {
     setEventDate(editingEvent.date);
     setEventType(editingEvent.type);
     setNotes(editingEvent.notes);
-  }, [editingEvent]);
+  }, [contacts, editingEvent, params.eventId, router]);
 
   const visibleContacts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -70,6 +95,7 @@ export default function AddEventScreen() {
 
         <View style={styles.section}>
           <Text style={styles.label}>Who did you connect with?</Text>
+          {contactError ? <Text style={styles.errorText}>{contactError}</Text> : null}
           <View style={styles.searchBox}>
             <Feather color="#707973" name="search" size={26} />
             <TextInput
@@ -107,11 +133,14 @@ export default function AddEventScreen() {
               );
             })}
           </ScrollView>
+          {!contactError && visibleContacts.length === 0 ? (
+            <Text style={styles.helperText}>No contacts match that search.</Text>
+          ) : null}
         </View>
 
         <View style={styles.section}>
           <Text style={styles.label}>When did it happen?</Text>
-          <View style={styles.dateInput}>
+          <View style={[styles.dateInput, dateError && styles.inputError]}>
             <MaterialCommunityIcons color="#707973" name="calendar-month-outline" size={28} />
             <TextInput
               onChangeText={setEventDate}
@@ -122,6 +151,7 @@ export default function AddEventScreen() {
             />
             <MaterialCommunityIcons color="#161a32" name="calendar-blank-outline" size={26} />
           </View>
+          {dateError ? <Text style={styles.errorText}>{dateError}</Text> : null}
         </View>
 
         <View style={styles.section}>
@@ -168,14 +198,14 @@ export default function AddEventScreen() {
             if (editingEvent) {
               updateEvent(editingEvent.id, {
                 contactId: selectedContactId,
-                date: eventDate,
+                date: trimmedDate,
                 type: eventType,
                 notes,
               });
             } else {
               addEvent({
                 contactId: selectedContactId,
-                date: eventDate,
+                date: trimmedDate,
                 type: eventType,
                 notes,
               });
@@ -254,10 +284,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 14,
   },
+  inputError: {
+    borderColor: '#ba1a1a',
+  },
   dateText: {
     flex: 1,
     color: AppColors.text,
     fontSize: 18,
+  },
+  helperText: {
+    color: '#67708b',
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  errorText: {
+    color: '#ba1a1a',
+    fontSize: 14,
+    lineHeight: 20,
   },
   typeGrid: {
     flexDirection: 'row',

@@ -30,10 +30,20 @@ export default function AddContactScreen() {
   const [name, setName] = useState('');
   const [relationship, setRelationship] = useState<StoredRelationship>('Family');
   const [interval, setInterval] = useState<StoredInterval>('Weekly');
-  const canSave = name.trim().length > 0;
+  const trimmedName = name.trim();
+  const nameError = trimmedName.length === 0 ? 'Enter a name to save this contact.' : null;
+  const canSave = !nameError;
 
   useEffect(() => {
+    if (params.contactId && !editingContact) {
+      router.replace('/contacts');
+      return;
+    }
+
     if (!editingContact) {
+      setName('');
+      setRelationship('Family');
+      setInterval('Weekly');
       return;
     }
 
@@ -73,9 +83,10 @@ export default function AddContactScreen() {
               onChangeText={setName}
               placeholder="Who are you connecting with?"
               placeholderTextColor="#707973"
-              style={styles.input}
+              style={[styles.input, nameError && styles.inputError]}
               value={name}
             />
+            {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
           </View>
 
           <View style={styles.section}>
@@ -141,13 +152,13 @@ export default function AddContactScreen() {
             onPress={() => {
               if (editingContact) {
                 updateContact(editingContact.id, {
-                  name,
+                  name: trimmedName,
                   relationship,
                   interval,
                 });
               } else {
                 addContact({
-                  name,
+                  name: trimmedName,
                   relationship,
                   interval,
                 });
@@ -235,6 +246,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     fontSize: 18,
     color: AppColors.text,
+  },
+  inputError: {
+    borderColor: '#ba1a1a',
+  },
+  errorText: {
+    color: '#ba1a1a',
+    fontSize: 14,
+    lineHeight: 20,
   },
   chipWrap: {
     flexDirection: 'row',
