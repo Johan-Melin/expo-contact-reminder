@@ -60,14 +60,18 @@ function formatDisplayDate(value: string) {
 
 export default function AddEventScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ eventId?: string }>();
+  const params = useLocalSearchParams<{ contactId?: string; eventId?: string }>();
   const { contacts, addEvent, events, updateEvent } = useAppData();
   const editingEvent = useMemo(
     () => events.find((event) => event.id === params.eventId),
     [events, params.eventId]
   );
+  const preselectedContact = useMemo(
+    () => contacts.find((contact) => contact.id === params.contactId),
+    [contacts, params.contactId]
+  );
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedContactId, setSelectedContactId] = useState(contacts[0]?.id ?? '');
+  const [selectedContactId, setSelectedContactId] = useState(preselectedContact?.id ?? contacts[0]?.id ?? '');
   const [eventDate, setEventDate] = useState('2026-05-17');
   const [eventType, setEventType] = useState<StoredConnectionType>('Phone Call');
   const [notes, setNotes] = useState('');
@@ -89,7 +93,7 @@ export default function AddEventScreen() {
     }
 
     if (!editingEvent) {
-      setSelectedContactId(contacts[0]?.id ?? '');
+      setSelectedContactId(preselectedContact?.id ?? contacts[0]?.id ?? '');
       setEventDate('2026-05-18');
       setEventType('Phone Call');
       setNotes('');
@@ -102,7 +106,7 @@ export default function AddEventScreen() {
     setEventType(editingEvent.type);
     setNotes(editingEvent.notes);
     setShowDatePicker(Platform.OS === 'ios');
-  }, [contacts, editingEvent, params.eventId, router]);
+  }, [contacts, editingEvent, params.eventId, preselectedContact, router]);
 
   const visibleContacts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();

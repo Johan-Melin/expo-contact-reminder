@@ -61,6 +61,16 @@ export type HistoryEntry = {
   iconColor: string;
 };
 
+export type ContactDetailEvent = {
+  id: string;
+  date: string;
+  age: string;
+  mode: string;
+  notes: string;
+  icon: MaterialIconName;
+  iconColor: string;
+};
+
 export type StoredContact = {
   id: string;
   name: string;

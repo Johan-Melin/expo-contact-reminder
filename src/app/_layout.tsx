@@ -20,6 +20,13 @@ export default function RootLayout() {
     <AppDataProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="contact/[contactId]"
+          options={{
+            animation: 'default',
+            presentation: 'card',
+          }}
+        />
         <Stack.Screen name="add-contact" options={modalOptions} />
         <Stack.Screen name="add-event" options={modalOptions} />
       </Stack>

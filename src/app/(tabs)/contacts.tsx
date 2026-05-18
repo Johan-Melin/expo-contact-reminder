@@ -97,7 +97,7 @@ export default function ContactsScreen() {
                 {...contact}
                 onPress={() =>
                   router.push({
-                    pathname: '/add-contact',
+                    pathname: '/contact/[contactId]',
                     params: { contactId: contact.id },
                   })
                 }

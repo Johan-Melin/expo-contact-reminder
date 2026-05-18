@@ -1,5 +1,6 @@
 import {
   Contact,
+  ContactDetailEvent,
   HistoryEntry,
   MaterialIconName,
   OnTrackContact,
@@ -86,6 +87,14 @@ function historyTypeToColor(type: StoredConnectionType) {
 
 function pluralizeDay(days: number) {
   return `${days} day${days === 1 ? '' : 's'}`;
+}
+
+function formatDateLabel(value: string) {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(toDate(value));
 }
 
 export function buildReminderSummary(contacts: StoredContact[], events: StoredEvent[]) {
@@ -267,5 +276,69 @@ export function buildHistoryEntries(
     lastWeek: lastWeek.map(({ daysAgo: _daysAgo, ...entry }) => entry),
     topContact,
     averageGap: average,
+  };
+}
+
+export function buildContactDetail(
+  contactId: string,
+  contacts: StoredContact[],
+  events: StoredEvent[]
+):
+  | {
+      id: string;
+      name: string;
+      relationship: string;
+      interval: string;
+      accent: string;
+      avatar: string;
+      initials: string;
+      tagBackground: string;
+      tagColor: string;
+      urgency: string;
+      latestConnection: string;
+      totalEvents: number;
+      recentEvents: ContactDetailEvent[];
+    }
+  | null {
+  const contact = contacts.find((item) => item.id === contactId);
+  if (!contact) {
+    return null;
+  }
+
+  const contactEvents = events
+    .filter((event) => event.contactId === contactId)
+    .sort((a, b) => toDate(b.date).getTime() - toDate(a.date).getTime());
+
+  const latest = contactEvents[0];
+  const dueInDays = latest
+    ? intervalToDays(contact.interval) - differenceInDays(toDate(latest.date))
+    : -999;
+
+  return {
+    id: contact.id,
+    name: contact.name,
+    relationship: contact.relationship,
+    interval: contact.interval,
+    accent: contact.accent,
+    avatar: contact.avatar,
+    initials: contact.initials,
+    tagBackground: contact.tagBackground,
+    tagColor: contact.tagColor,
+    urgency: latest ? (dueInDays < 0 ? `${pluralizeDay(Math.abs(dueInDays))} overdue` : `${pluralizeDay(dueInDays)} left`) : 'No connections logged yet',
+    latestConnection: latest ? formatDateLabel(latest.date) : 'No connections yet',
+    totalEvents: contactEvents.length,
+    recentEvents: contactEvents.slice(0, 6).map((event) => {
+      const daysAgo = differenceInDays(toDate(event.date));
+
+      return {
+        id: event.id,
+        date: formatDateLabel(event.date),
+        age: daysAgo === 0 ? 'Today' : `${pluralizeDay(daysAgo)} ago`,
+        mode: event.type,
+        notes: event.notes,
+        icon: historyTypeToIcon(event.type),
+        iconColor: historyTypeToColor(event.type),
+      };
+    }),
   };
 }
