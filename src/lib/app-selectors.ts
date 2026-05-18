@@ -2,6 +2,7 @@ import {
   Contact,
   ContactDetailEvent,
   HistoryEntry,
+  IntervalUnit,
   MaterialIconName,
   OnTrackContact,
   OverdueReminder,
@@ -9,22 +10,33 @@ import {
   StoredContact,
   StoredEvent,
   StoredInterval,
+  StoredIntervalPreset,
   UpcomingReminder,
+  formatIntervalLabel,
   reminderSummary,
 } from '@/data/mock-app-data';
 
 const TODAY = new Date('2026-05-17T12:00:00Z');
 
 function intervalToDays(interval: StoredInterval) {
-  switch (interval) {
+  if (interval.kind === 'custom') {
+    switch (interval.unit) {
+      case 'days':
+        return interval.value;
+      case 'weeks':
+        return interval.value * 7;
+      case 'months':
+        return interval.value * 30;
+    }
+  }
+
+  switch (interval.preset) {
     case 'Weekly':
       return 7;
     case 'Bi-weekly':
       return 14;
     case 'Monthly':
       return 30;
-    case 'Custom':
-      return 21;
   }
 }
 
@@ -200,7 +212,7 @@ export function buildContactCards(contacts: StoredContact[], events: StoredEvent
       return {
         id: contact.id,
         name: contact.name,
-        cadence: contact.interval,
+        cadence: formatIntervalLabel(contact.interval),
         urgency: dueInDays < 0 ? 'Overdue' : `${pluralizeDay(dueInDays)} left`,
         tag: contact.relationship,
         accent: contact.accent,
@@ -321,7 +333,7 @@ export function buildContactDetail(
     id: contact.id,
     name: contact.name,
     relationship: contact.relationship,
-    interval: contact.interval,
+    interval: formatIntervalLabel(contact.interval),
     accent: contact.accent,
     avatar: contact.avatar,
     initials: contact.initials,

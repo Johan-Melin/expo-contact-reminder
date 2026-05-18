@@ -13,12 +13,17 @@ import {
 } from 'react-native';
 
 import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
-import { StoredInterval, StoredRelationship } from '@/data/mock-app-data';
+import {
+  IntervalUnit,
+  StoredInterval,
+  StoredRelationship,
+  customIntervalUnits,
+  presetIntervalOptions,
+} from '@/data/mock-app-data';
 import { confirmAction } from '@/lib/confirm-action';
 import { ModalHeader } from '@/components/modal-header';
 import { useAppData } from '@/state/app-data';
 
-const intervalOptions = ['Weekly', 'Bi-weekly', 'Monthly', 'Custom'] as const;
 const relationshipOptions = ['Family', 'Friend', 'Colleague', 'Other'] as const;
 
 export default function AddContactScreen() {
@@ -31,10 +36,23 @@ export default function AddContactScreen() {
   );
   const [name, setName] = useState('');
   const [relationship, setRelationship] = useState<StoredRelationship>('Family');
-  const [interval, setInterval] = useState<StoredInterval>('Weekly');
+  const [interval, setInterval] = useState<StoredInterval>({ kind: 'preset', preset: 'Weekly' });
+  const [customValue, setCustomValue] = useState('3');
+  const [customUnit, setCustomUnit] = useState<IntervalUnit>('weeks');
   const trimmedName = name.trim();
+  const trimmedCustomValue = customValue.trim();
+  const parsedCustomValue = Number.parseInt(trimmedCustomValue, 10);
+  const customValueError =
+    interval.kind === 'custom' && (!trimmedCustomValue || Number.isNaN(parsedCustomValue) || parsedCustomValue <= 0)
+      ? 'Enter a valid custom interval greater than 0.'
+      : null;
   const nameError = trimmedName.length === 0 ? 'Enter a name to save this contact.' : null;
-  const canSave = !nameError;
+  const canSave = !nameError && !customValueError;
+
+  const resolvedInterval: StoredInterval =
+    interval.kind === 'custom'
+      ? { kind: 'custom', value: parsedCustomValue || 1, unit: customUnit }
+      : interval;
 
   useEffect(() => {
     if (params.contactId && !editingContact) {
@@ -45,13 +63,22 @@ export default function AddContactScreen() {
     if (!editingContact) {
       setName('');
       setRelationship('Family');
-      setInterval('Weekly');
+      setInterval({ kind: 'preset', preset: 'Weekly' });
+      setCustomValue('3');
+      setCustomUnit('weeks');
       return;
     }
 
     setName(editingContact.name);
     setRelationship(editingContact.relationship);
     setInterval(editingContact.interval);
+    if (editingContact.interval.kind === 'custom') {
+      setCustomValue(String(editingContact.interval.value));
+      setCustomUnit(editingContact.interval.unit);
+    } else {
+      setCustomValue('3');
+      setCustomUnit('weeks');
+    }
   }, [editingContact]);
 
   return (
@@ -113,27 +140,61 @@ export default function AddContactScreen() {
           <View style={styles.section}>
             <Text style={styles.label}>Contact Interval Preference</Text>
             <View style={styles.intervalGrid}>
-              {intervalOptions.map((option) => {
-                const isActive = option === interval;
+              {presetIntervalOptions.map((option) => {
+                const isActive = interval.kind === 'preset' && option === interval.preset;
                 return (
                   <Pressable
                     key={option}
-                    onPress={() => setInterval(option as StoredInterval)}
+                    onPress={() => setInterval({ kind: 'preset', preset: option })}
                     style={[styles.intervalTile, isActive && styles.intervalTileActive]}>
                     <Text style={[styles.intervalTileText, isActive && styles.intervalTileTextActive]}>
                       {option}
                     </Text>
-                    {option === 'Custom' ? (
-                      <MaterialCommunityIcons
-                        color={isActive ? '#161a32' : '#161a32'}
-                        name="pencil-outline"
-                        size={18}
-                      />
-                    ) : null}
                   </Pressable>
                 );
               })}
             </View>
+            <Pressable
+              onPress={() => setInterval({ kind: 'custom', value: parsedCustomValue || 1, unit: customUnit })}
+              style={[styles.customIntervalCard, interval.kind === 'custom' && styles.customIntervalCardActive]}>
+              <View style={styles.customIntervalHeader}>
+                <Text style={[styles.customIntervalTitle, interval.kind === 'custom' && styles.customIntervalTitleActive]}>
+                  Custom
+                </Text>
+                <MaterialCommunityIcons
+                  color={interval.kind === 'custom' ? '#161a32' : '#404943'}
+                  name="pencil-outline"
+                  size={18}
+                />
+              </View>
+              <View style={styles.customIntervalRow}>
+                <TextInput
+                  keyboardType="number-pad"
+                  onChangeText={setCustomValue}
+                  placeholder="3"
+                  placeholderTextColor="#707973"
+                  style={[styles.customValueInput, customValueError && styles.inputError]}
+                  value={customValue}
+                />
+                <View style={styles.customUnitWrap}>
+                  {customIntervalUnits.map((unit) => {
+                    const isActive = customUnit === unit;
+                    return (
+                      <Pressable
+                        key={unit}
+                        onPress={() => {
+                          setCustomUnit(unit);
+                          setInterval({ kind: 'custom', value: parsedCustomValue || 1, unit });
+                        }}
+                        style={[styles.customUnitChip, isActive && styles.customUnitChipActive]}>
+                        <Text style={[styles.customUnitText, isActive && styles.customUnitTextActive]}>{unit}</Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </View>
+              {customValueError ? <Text style={styles.errorText}>{customValueError}</Text> : null}
+            </Pressable>
           </View>
 
           <View style={styles.tipCard}>
@@ -156,13 +217,13 @@ export default function AddContactScreen() {
                 updateContact(editingContact.id, {
                   name: trimmedName,
                   relationship,
-                  interval,
+                  interval: resolvedInterval,
                 });
               } else {
                 addContact({
                   name: trimmedName,
                   relationship,
-                  interval,
+                  interval: resolvedInterval,
                 });
               }
               router.back();
@@ -328,6 +389,66 @@ const styles = StyleSheet.create({
   },
   intervalTileTextActive: {
     color: '#161a32',
+  },
+  customIntervalCard: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#bfc9c1',
+    backgroundColor: '#ffffff',
+    padding: 18,
+    gap: 14,
+  },
+  customIntervalCardActive: {
+    backgroundColor: '#b1f0ce',
+    borderColor: '#2d6a4f',
+  },
+  customIntervalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  customIntervalTitle: {
+    color: AppColors.text,
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  customIntervalTitleActive: {
+    color: '#161a32',
+  },
+  customIntervalRow: {
+    gap: 12,
+  },
+  customValueInput: {
+    height: 56,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#bfc9c1',
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 16,
+    fontSize: 18,
+    color: AppColors.text,
+  },
+  customUnitWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  customUnitChip: {
+    borderRadius: 999,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    backgroundColor: '#eef1ee',
+  },
+  customUnitChipActive: {
+    backgroundColor: '#2d6a4f',
+  },
+  customUnitText: {
+    color: '#404943',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  customUnitTextActive: {
+    color: '#ffffff',
   },
   tipCard: {
     flexDirection: 'row',

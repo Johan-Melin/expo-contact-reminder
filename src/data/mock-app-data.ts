@@ -33,7 +33,11 @@ export type OnTrackContact = {
 
 export type ContactFilter = 'All' | 'Family' | 'Friends' | 'Colleague';
 export type StoredRelationship = 'Family' | 'Friend' | 'Colleague' | 'Other';
-export type StoredInterval = 'Weekly' | 'Bi-weekly' | 'Monthly' | 'Custom';
+export type IntervalUnit = 'days' | 'weeks' | 'months';
+export type StoredIntervalPreset = 'Weekly' | 'Bi-weekly' | 'Monthly';
+export type StoredInterval =
+  | { kind: 'preset'; preset: StoredIntervalPreset }
+  | { kind: 'custom'; value: number; unit: IntervalUnit };
 export type StoredConnectionType = 'Phone Call' | 'Message' | 'In-person' | 'Video Call';
 
 export type Contact = {
@@ -130,12 +134,24 @@ export const relationshipPalette: Record<
   },
 };
 
+export const presetIntervalOptions: StoredIntervalPreset[] = ['Weekly', 'Bi-weekly', 'Monthly'];
+export const customIntervalUnits: IntervalUnit[] = ['days', 'weeks', 'months'];
+
+export function formatIntervalLabel(interval: StoredInterval) {
+  if (interval.kind === 'preset') {
+    return interval.preset;
+  }
+
+  const unitLabel = interval.value === 1 ? interval.unit.slice(0, -1) : interval.unit;
+  return `${interval.value} ${unitLabel}`;
+}
+
 export const initialStoredContacts: StoredContact[] = [
   {
     id: 'marcus-chen',
     name: 'Marcus Chen',
     relationship: 'Family',
-    interval: 'Weekly',
+    interval: { kind: 'preset', preset: 'Weekly' },
     ...relationshipPalette.Family,
     initials: 'MC',
   },
@@ -143,7 +159,7 @@ export const initialStoredContacts: StoredContact[] = [
     id: 'elena-rodriguez',
     name: 'Elena Rodriguez',
     relationship: 'Friend',
-    interval: 'Bi-weekly',
+    interval: { kind: 'preset', preset: 'Bi-weekly' },
     ...relationshipPalette.Friend,
     initials: 'ER',
   },
@@ -151,7 +167,7 @@ export const initialStoredContacts: StoredContact[] = [
     id: 'david-park',
     name: 'David Park',
     relationship: 'Colleague',
-    interval: 'Monthly',
+    interval: { kind: 'preset', preset: 'Monthly' },
     ...relationshipPalette.Colleague,
     initials: 'DP',
   },
@@ -159,7 +175,7 @@ export const initialStoredContacts: StoredContact[] = [
     id: 'sarah-jenkins',
     name: 'Sarah Jenkins',
     relationship: 'Friend',
-    interval: 'Weekly',
+    interval: { kind: 'preset', preset: 'Weekly' },
     accent: '#cf1f25',
     avatar: '#d63031',
     tagBackground: '#feecec',
@@ -170,7 +186,7 @@ export const initialStoredContacts: StoredContact[] = [
     id: 'john-hale',
     name: 'John Hale',
     relationship: 'Other',
-    interval: 'Monthly',
+    interval: { kind: 'preset', preset: 'Monthly' },
     ...relationshipPalette.Other,
     initials: 'JH',
   },
@@ -178,7 +194,7 @@ export const initialStoredContacts: StoredContact[] = [
     id: 'michael-reed',
     name: 'Michael Reed',
     relationship: 'Colleague',
-    interval: 'Monthly',
+    interval: { kind: 'preset', preset: 'Monthly' },
     accent: '#c9c1ad',
     avatar: '#5f6261',
     tagBackground: '#dee6cc',
@@ -189,7 +205,7 @@ export const initialStoredContacts: StoredContact[] = [
     id: 'david-kim',
     name: 'David Kim',
     relationship: 'Family',
-    interval: 'Bi-weekly',
+    interval: { kind: 'preset', preset: 'Bi-weekly' },
     accent: '#95d4b3',
     avatar: '#95d4b3',
     tagBackground: '#dbe8ff',
@@ -200,7 +216,7 @@ export const initialStoredContacts: StoredContact[] = [
     id: 'sophie-ward',
     name: 'Sophie Ward',
     relationship: 'Friend',
-    interval: 'Weekly',
+    interval: { kind: 'preset', preset: 'Weekly' },
     accent: '#b1f0ce',
     avatar: '#f2c9b8',
     tagBackground: '#e5e6ff',

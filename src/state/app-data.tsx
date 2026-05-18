@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
+  IntervalUnit,
   StoredConnectionType,
   StoredContact,
   StoredEvent,
   StoredInterval,
+  StoredIntervalPreset,
   StoredRelationship,
   initialStoredContacts,
   initialStoredEvents,
@@ -53,13 +55,54 @@ function isStoredContact(value: unknown): value is StoredContact {
     typeof record.id === 'string' &&
     typeof record.name === 'string' &&
     typeof record.relationship === 'string' &&
-    typeof record.interval === 'string' &&
+    isStoredInterval(record.interval) &&
     typeof record.accent === 'string' &&
     typeof record.avatar === 'string' &&
     typeof record.initials === 'string' &&
     typeof record.tagBackground === 'string' &&
     typeof record.tagColor === 'string'
   );
+}
+
+function isStoredIntervalPreset(value: unknown): value is StoredIntervalPreset {
+  return value === 'Weekly' || value === 'Bi-weekly' || value === 'Monthly';
+}
+
+function isIntervalUnit(value: unknown): value is IntervalUnit {
+  return value === 'days' || value === 'weeks' || value === 'months';
+}
+
+function isStoredInterval(value: unknown): value is StoredInterval {
+  if (typeof value === 'string') {
+    return value === 'Weekly' || value === 'Bi-weekly' || value === 'Monthly' || value === 'Custom';
+  }
+
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const record = value as Record<string, unknown>;
+  if (record.kind === 'preset') {
+    return isStoredIntervalPreset(record.preset);
+  }
+
+  if (record.kind === 'custom') {
+    return typeof record.value === 'number' && record.value > 0 && isIntervalUnit(record.unit);
+  }
+
+  return false;
+}
+
+function normalizeStoredInterval(value: StoredInterval | 'Weekly' | 'Bi-weekly' | 'Monthly' | 'Custom'): StoredInterval {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  if (value === 'Custom') {
+    return { kind: 'custom', value: 3, unit: 'weeks' };
+  }
+
+  return { kind: 'preset', preset: value };
 }
 
 function isStoredEvent(value: unknown): value is StoredEvent {
@@ -84,7 +127,12 @@ function parseStoredContacts(raw: string | null) {
 
   try {
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed.filter(isStoredContact) : null;
+    return Array.isArray(parsed)
+      ? parsed.filter(isStoredContact).map((contact) => ({
+          ...contact,
+          interval: normalizeStoredInterval(contact.interval),
+        }))
+      : null;
   } catch {
     return null;
   }
