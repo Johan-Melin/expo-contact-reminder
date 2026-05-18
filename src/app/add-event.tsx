@@ -1,8 +1,10 @@
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  Platform,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -34,6 +36,28 @@ function isIsoDate(value: string) {
   return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
 }
 
+function parseIsoDate(value: string) {
+  if (!isIsoDate(value)) {
+    return new Date('2026-05-18T00:00:00.000Z');
+  }
+
+  return new Date(`${value}T00:00:00.000Z`);
+}
+
+function toIsoDate(value: Date) {
+  return value.toISOString().slice(0, 10);
+}
+
+function formatDisplayDate(value: string) {
+  const date = parseIsoDate(value);
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(date);
+}
+
 export default function AddEventScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ eventId?: string }>();
@@ -47,6 +71,7 @@ export default function AddEventScreen() {
   const [eventDate, setEventDate] = useState('2026-05-17');
   const [eventType, setEventType] = useState<StoredConnectionType>('Phone Call');
   const [notes, setNotes] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
   const trimmedDate = eventDate.trim();
   const dateError = trimmedDate.length === 0
     ? 'Enter the date of this connection.'
@@ -55,6 +80,7 @@ export default function AddEventScreen() {
       : null;
   const contactError = !contacts.length ? 'Add a contact before logging a connection.' : null;
   const canSave = Boolean(selectedContactId) && !dateError && !contactError;
+  const pickerDate = parseIsoDate(trimmedDate);
 
   useEffect(() => {
     if (params.eventId && !editingEvent) {
@@ -67,6 +93,7 @@ export default function AddEventScreen() {
       setEventDate('2026-05-18');
       setEventType('Phone Call');
       setNotes('');
+      setShowDatePicker(Platform.OS === 'ios');
       return;
     }
 
@@ -74,6 +101,7 @@ export default function AddEventScreen() {
     setEventDate(editingEvent.date);
     setEventType(editingEvent.type);
     setNotes(editingEvent.notes);
+    setShowDatePicker(Platform.OS === 'ios');
   }, [contacts, editingEvent, params.eventId, router]);
 
   const visibleContacts = useMemo(() => {
@@ -84,6 +112,18 @@ export default function AddEventScreen() {
 
     return contacts.filter((contact) => contact.name.toLowerCase().includes(query));
   }, [searchQuery]);
+
+  const handleDateChange = (event: DateTimePickerEvent, nextDate?: Date) => {
+    if (Platform.OS === 'android') {
+      setShowDatePicker(false);
+    }
+
+    if (event.type === 'dismissed' || !nextDate) {
+      return;
+    }
+
+    setEventDate(toIsoDate(nextDate));
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -140,17 +180,43 @@ export default function AddEventScreen() {
 
         <View style={styles.section}>
           <Text style={styles.label}>When did it happen?</Text>
-          <View style={[styles.dateInput, dateError && styles.inputError]}>
-            <MaterialCommunityIcons color="#707973" name="calendar-month-outline" size={28} />
-            <TextInput
-              onChangeText={setEventDate}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor="#67708b"
-              style={styles.dateText}
-              value={eventDate}
-            />
-            <MaterialCommunityIcons color="#161a32" name="calendar-blank-outline" size={26} />
-          </View>
+          {Platform.OS === 'web' ? (
+            <View style={[styles.dateInput, dateError && styles.inputError]}>
+              <MaterialCommunityIcons color="#707973" name="calendar-month-outline" size={28} />
+              <TextInput
+                onChangeText={setEventDate}
+                placeholder="YYYY-MM-DD"
+                placeholderTextColor="#67708b"
+                style={styles.dateText}
+                value={eventDate}
+              />
+              <MaterialCommunityIcons color="#161a32" name="calendar-blank-outline" size={26} />
+            </View>
+          ) : (
+            <View style={styles.datePickerSection}>
+              <Pressable
+                onPress={() => setShowDatePicker((current) => !current)}
+                style={[styles.dateInput, dateError && styles.inputError]}>
+                <MaterialCommunityIcons color="#707973" name="calendar-month-outline" size={28} />
+                <Text style={styles.dateDisplayText}>{formatDisplayDate(trimmedDate)}</Text>
+                <MaterialCommunityIcons
+                  color="#161a32"
+                  name={showDatePicker ? 'chevron-up' : 'chevron-down'}
+                  size={24}
+                />
+              </Pressable>
+              {showDatePicker ? (
+                <View style={styles.datePickerCard}>
+                  <DateTimePicker
+                    display={Platform.OS === 'ios' ? 'inline' : 'default'}
+                    mode="date"
+                    onChange={handleDateChange}
+                    value={pickerDate}
+                  />
+                </View>
+              ) : null}
+            </View>
+          )}
           {dateError ? <Text style={styles.errorText}>{dateError}</Text> : null}
         </View>
 
@@ -284,10 +350,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 14,
   },
+  datePickerSection: {
+    gap: 12,
+  },
+  datePickerCard: {
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: '#dfe4dc',
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
   inputError: {
     borderColor: '#ba1a1a',
   },
   dateText: {
+    flex: 1,
+    color: AppColors.text,
+    fontSize: 18,
+  },
+  dateDisplayText: {
     flex: 1,
     color: AppColors.text,
     fontSize: 18,
