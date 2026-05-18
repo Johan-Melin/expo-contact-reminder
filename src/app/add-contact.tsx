@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-import { AppColors, AppSpacing } from '@/constants/app-design';
+import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { StoredInterval, StoredRelationship } from '@/data/mock-app-data';
 import { ModalHeader } from '@/components/modal-header';
 import { useAppData } from '@/state/app-data';
@@ -211,11 +211,13 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 28,
     gap: 28,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.08,
+      radius: 16,
+      offsetY: 10,
+      elevation: 3,
+    }),
   },
   section: {
     gap: 14,
@@ -321,11 +323,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 12,
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 4,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.2,
+      radius: 16,
+      offsetY: 10,
+      elevation: 4,
+    }),
   },
   primaryButtonDisabled: {
     opacity: 0.55,

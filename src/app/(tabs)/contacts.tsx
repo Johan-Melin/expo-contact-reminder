@@ -7,7 +7,7 @@ import { Alert, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput
 import { AppFab, ContactCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
 import { AppStateBanner } from '@/components/app-state-banner';
-import { AppColors, AppSpacing } from '@/constants/app-design';
+import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { ContactFilter, contactFilters } from '@/data/mock-app-data';
 import { buildContactCards } from '@/lib/app-selectors';
 import { useAppData } from '@/state/app-data';
@@ -175,11 +175,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 14,
     paddingHorizontal: 28,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.08,
+      radius: 14,
+      offsetY: 8,
+      elevation: 3,
+    }),
   },
   searchInput: {
     flex: 1,
@@ -245,11 +247,13 @@ const styles = StyleSheet.create({
     padding: 28,
     alignItems: 'flex-start',
     gap: 12,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.08,
+      radius: 16,
+      offsetY: 10,
+      elevation: 3,
+    }),
   },
   noResultsTitle: {
     color: '#161a32',
@@ -281,11 +285,13 @@ const styles = StyleSheet.create({
     paddingBottom: 42,
     overflow: 'hidden',
     gap: 18,
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.18,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 4,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.18,
+      radius: 20,
+      offsetY: 12,
+      elevation: 4,
+    }),
   },
   emptyStateIcon: {
     position: 'absolute',
@@ -315,11 +321,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.16,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.16,
+      radius: 10,
+      offsetY: 8,
+      elevation: 3,
+    }),
   },
   emptyStateButtonText: {
     color: '#0f5238',

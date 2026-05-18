@@ -3,7 +3,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { AppColors, AppSpacing } from '@/constants/app-design';
+import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 
 export default function TabsLayout() {
   return (
@@ -23,11 +23,13 @@ export default function TabsLayout() {
           borderTopLeftRadius: 26,
           borderTopRightRadius: 26,
           position: 'absolute',
-          shadowColor: AppColors.brand,
-          shadowOpacity: 0.08,
-          shadowRadius: 16,
-          shadowOffset: { width: 0, height: -4 },
-          elevation: 10,
+          ...createBoxShadow({
+            color: AppColors.brand,
+            opacity: 0.08,
+            radius: 16,
+            offsetY: -4,
+            elevation: 10,
+          }),
         },
         tabBarItemStyle: {
           marginHorizontal: 8,

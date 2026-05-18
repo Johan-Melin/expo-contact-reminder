@@ -4,7 +4,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AvatarRing } from '@/components/app-primitives';
-import { AppSpacing } from '@/constants/app-design';
+import { AppSpacing, createBoxShadow } from '@/constants/app-design';
 import {
   Contact,
   HistoryEntry,
@@ -205,11 +205,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 18,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.08,
+      radius: 14,
+      offsetY: 8,
+      elevation: 3,
+    }),
   },
   upcomingCard: {
     backgroundColor: '#ffffff',
@@ -220,11 +222,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 18,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.08,
+      radius: 14,
+      offsetY: 8,
+      elevation: 3,
+    }),
   },
   cardCopy: {
     flex: 1,
@@ -255,11 +259,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingVertical: 14,
     borderRadius: 999,
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.18,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.18,
+      radius: 10,
+      offsetY: 6,
+      elevation: 3,
+    }),
   },
   primaryActionText: {
     color: '#ffffff',
@@ -305,11 +311,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 18,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.08,
+      radius: 16,
+      offsetY: 10,
+      elevation: 3,
+    }),
   },
   contactCopy: {
     flex: 1,
@@ -360,11 +368,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 18,
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.08,
+      radius: 14,
+      offsetY: 8,
+      elevation: 3,
+    }),
   },
   historyCopy: {
     flex: 1,
@@ -427,11 +437,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#0f5238',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.22,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 4,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.22,
+      radius: 16,
+      offsetY: 10,
+      elevation: 4,
+    }),
   },
   fabPlus: {
     position: 'absolute',

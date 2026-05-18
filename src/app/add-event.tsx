@@ -14,7 +14,7 @@ import {
 
 import { AvatarRing } from '@/components/app-primitives';
 import { ModalHeader } from '@/components/modal-header';
-import { AppColors, AppSpacing } from '@/constants/app-design';
+import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { StoredConnectionType } from '@/data/mock-app-data';
 import { useAppData } from '@/state/app-data';
 
@@ -317,11 +317,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 12,
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 4,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.2,
+      radius: 16,
+      offsetY: 10,
+      elevation: 4,
+    }),
   },
   logButtonDisabled: {
     opacity: 0.55,

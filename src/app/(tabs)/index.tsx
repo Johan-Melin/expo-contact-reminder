@@ -12,7 +12,7 @@ import {
 import { AppHeader } from '@/components/app-header';
 import { AppStateBanner } from '@/components/app-state-banner';
 import { SectionHeader } from '@/components/app-primitives';
-import { AppColors, AppSpacing } from '@/constants/app-design';
+import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { buildReminderSummary, buildReminders } from '@/lib/app-selectors';
 import { useAppData } from '@/state/app-data';
 
@@ -79,11 +79,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     overflow: 'hidden',
-    shadowColor: '#2d6a4f',
-    shadowOpacity: 0.16,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 4,
+    ...createBoxShadow({
+      color: '#2d6a4f',
+      opacity: 0.16,
+      radius: 18,
+      offsetY: 10,
+      elevation: 4,
+    }),
   },
   heroCopy: {
     flex: 1,

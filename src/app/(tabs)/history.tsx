@@ -7,7 +7,7 @@ import { HistoryEntryCard, MetricCard } from '@/components/app-cards';
 import { AppHeader } from '@/components/app-header';
 import { AppStateBanner } from '@/components/app-state-banner';
 import { TimelineHeader } from '@/components/app-primitives';
-import { AppColors, AppSpacing } from '@/constants/app-design';
+import { AppColors, AppSpacing, createBoxShadow } from '@/constants/app-design';
 import { buildHistoryEntries } from '@/lib/app-selectors';
 import { useAppData } from '@/state/app-data';
 
@@ -149,11 +149,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.18,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 3,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.18,
+      radius: 12,
+      offsetY: 8,
+      elevation: 3,
+    }),
   },
   addButtonText: {
     color: '#ffffff',
@@ -172,11 +174,13 @@ const styles = StyleSheet.create({
     padding: 28,
     minHeight: 232,
     overflow: 'hidden',
-    shadowColor: '#0f5238',
-    shadowOpacity: 0.18,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 4,
+    ...createBoxShadow({
+      color: '#0f5238',
+      opacity: 0.18,
+      radius: 18,
+      offsetY: 12,
+      elevation: 4,
+    }),
   },
   streakIcon: {
     position: 'absolute',
